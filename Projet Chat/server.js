@@ -1,43 +1,61 @@
+// Import des modules nécessaires
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
+// Initialisation des applications Express et HTTP
 const app = express();
 const server = http.createServer(app);
+
+// Initialisation de Socket.IO
 const io = new Server(server);
 
-// Serve static files (frontend)
+// Configuration pour servir les fichiers statiques (HTML, CSS, JS)
 app.use(express.static('public'));
 
-// Stocker les pseudos des utilisateurs
+// Stockage des utilisateurs connectés
 const users = {};
 
+// Gestion des connexions Socket.IO
 io.on('connection', (socket) => {
   console.log('Un utilisateur est connecté.');
 
-  // Gérer l'arrivée d'un nouvel utilisateur avec son pseudo
+  // Événement : un nouvel utilisateur choisit un pseudo
   socket.on('newUser', (username) => {
-    users[socket.id] = username; // Associer l'ID du socket au pseudo
+    users[socket.id] = username; // Associer le pseudo à l'ID du socket
     console.log(`${username} a rejoint le chat.`);
-    socket.broadcast.emit('userJoined', username); // Notifier les autres utilisateurs
+    
+    // Notifier les autres utilisateurs qu'une nouvelle personne a rejoint le chat
+    socket.broadcast.emit('userJoined', username);
   });
 
-  // Gérer les messages envoyés par les utilisateurs
+  // Événement : un utilisateur envoie un message
   socket.on('message', (data) => {
     console.log(`${data.username}: ${data.message}`);
-    io.emit('message', data); // Envoyer le message à tous les utilisateurs
+    
+    // Diffuser le message à tous les utilisateurs
+    io.emit('message', data);
   });
 
-  // Gérer la déconnexion des utilisateurs
+  // Événement : un utilisateur se déconnecte
   socket.on('disconnect', () => {
-    const username = users[socket.id];
-    console.log(`${username} s'est déconnecté.`);
-    delete users[socket.id]; // Supprimer l'utilisateur de la liste
-    socket.broadcast.emit('userJoined', `${username} a quitté le chat.`);
+    const username = users[socket.id]; // Récupérer le pseudo de l'utilisateur
+    if (username) {
+      console.log(`${username} s'est déconnecté.`);
+      
+      // Supprimer l'utilisateur de la liste des connectés
+      delete users[socket.id];
+      
+      // Notifier les autres utilisateurs que cette personne a quitté le chat
+      socket.broadcast.emit('userJoined', `${username} a quitté le chat.`);
+    }
   });
 });
 
-// Démarrer le serveur
-server.listen(3000, () => {
-  console.log('Serveur lancé sur http://localhost:3000');
+// Configuration du port (Render utilise process.env.PORT, sinon 3000 par défaut)
+const PORT = process.env.PORT || 3000;
+
+// Démarrage du serveur
+server.listen(PORT, () => {
+  console.log(`Serveur lancé sur le port ${PORT}`);
 });
