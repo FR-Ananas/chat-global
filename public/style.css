@@ -1,63 +1,114 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Arrière-plan bleu ciel comme Windows XP */
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f9;
+    background: #87CEFA; /* Ciel bleu */
+    font-family: 'Tahoma', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
-#app {
-  width: 400px;
-  max-width: 100%;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Fenêtre de chat */
+.chat-window {
+    width: 500px;
+    height: 350px;
+    background: #FFFFFF; /* Fenêtre blanche */
+    border: 2px solid #B0C4DE; /* Bordure de fenêtre */
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
+    margin: 50px auto;
+    padding: 10px;
+    position: relative;
 }
 
-#login input, #message {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+/* Barre de titre de la fenêtre */
+.chat-window .title-bar {
+    background: #A3C9F1; /* Bleu clair Windows XP */
+    color: #000;
+    padding: 5px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid #B0C4DE; /* Séparation en bas */
 }
 
-#login-btn, #send-btn {
-  padding: 10px;
-  width: 100%;
-  border: none;
-  background-color: #5cb85c;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
+/* Fenêtre de message */
+.messages {
+    height: 250px;
+    overflow-y: auto;
+    margin: 10px;
+    background: #F0F8FF; /* Fond bleu clair pour les messages */
+    border: 1px solid #B0C4DE;
+    padding: 10px;
+    font-size: 14px;
+    color: #000;
 }
 
-#login-btn:hover, #send-btn:hover {
-  background-color: #4cae4c;
+/* Champ de saisie */
+.input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #B0C4DE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    font-size: 14px;
 }
 
-#messages {
-  height: 300px;
-  overflow-y: scroll;
-  margin-bottom: 10px;
+/* Boutons comme ceux de Windows XP */
+.button {
+    background: #A3C9F1;
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #B0C4DE;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
+.button:hover {
+    background: #B0C4DE;
+}
+
+/* Messages entrants et sortants */
 .message {
-  margin: 10px 0;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  font-size: 14px;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    max-width: 80%;
 }
 
-.message span {
-  font-weight: bold;
+.message.sent {
+    background: #D3F9D8; /* Message envoyé en vert clair */
+    align-self: flex-end;
+}
+
+.message.received {
+    background: #F0F0F0; /* Message reçu en gris clair */
+    align-self: flex-start;
+}
+
+/* Barre de tâches */
+.taskbar {
+    background: #A3C9F1;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.taskbar-button {
+    background: #87CEFA;
+    color: #000;
+    border: 1px solid #B0C4DE;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.taskbar-icons {
+    display: flex;
+    gap: 10px;
 }
