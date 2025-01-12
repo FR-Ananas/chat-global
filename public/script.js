@@ -1,0 +1,29 @@
+let username = "";
+
+function startChat() {
+    const input = document.getElementById("username");
+    const errorMessage = document.getElementById("error-message");
+
+    if (input.value.trim() === "") {
+        errorMessage.style.display = "block";
+    } else {
+        username = input.value.trim();
+        errorMessage.style.display = "none";
+        document.querySelector(".login-page").style.display = "none";
+        document.querySelector(".chat-page").style.display = "flex";
+    }
+}
+
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const messages = document.getElementById("messages");
+
+    if (input.value.trim() !== "") {
+        const message = document.createElement("div");
+        message.className = "message";
+        message.innerHTML = `<strong>${username}:</strong> ${input.value.trim()}`;
+        messages.appendChild(message);
+        input.value = "";
+        messages.scrollTop = messages.scrollHeight;
+    }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Global</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page">
+        <div class="login-box">
+            <h1>Chat Global</h1>
+            <input id="username" type="text" placeholder="Entrez votre pseudo">
+            <button onclick="startChat()">Connexion</button>
+            <p id="error-message">Veuillez entrer un pseudo pour continuer.</p>
+        </div>
+    </div>
+
+    <!-- Chat Page -->
+    <div class="chat-page">
+        <div class="chat-window">
+            <div class="window-header">Chat Global</div>
+            <div class="messages" id="messages"></div>
+            <div class="input-bar">
+                <input id="chatInput" type="text" placeholder="Tapez votre message...">
+                <button onclick="sendMessage()">Envoyer</button>
+            </div>
+        </div>
+        <div class="user-list">
+            <div class="user-count" id="userCount">0 online</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
