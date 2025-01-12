@@ -7,7 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-window">
+    <!-- Popup pour choisir un pseudo -->
+    <div class="popup" id="popup">
+        <div class="popup-window">
+            <h3>Choisissez un pseudo</h3>
+            <input type="text" id="username" placeholder="Entrez votre pseudo" />
+            <button class="button" id="set-username-button">OK</button>
+        </div>
+    </div>
+
+    <!-- Fenêtre de chat -->
+    <div class="chat-window" id="chat-window" style="display: none;">
         <div class="title-bar">
             Chat Global
         </div>
@@ -16,11 +26,9 @@
         <button class="button" id="send-button">Envoyer</button>
     </div>
 
+    <!-- Barre de tâches -->
     <div class="taskbar">
         <button class="taskbar-button">Démarrer</button>
-        <div class="taskbar-icons">
-            <!-- Icônes de tâches -->
-        </div>
     </div>
 
     <script src="script.js"></script>
