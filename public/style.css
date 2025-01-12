@@ -7,17 +7,75 @@ body {
     height: 100%;
 }
 
+/* Popup pour choisir un pseudo */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup-window {
+    background: #FFFFFF;
+    padding: 20px;
+    border: 2px solid #A3C9F1;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup h3 {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.popup input {
+    padding: 8px;
+    font-size: 14px;
+    width: 200px;
+    margin-bottom: 10px;
+    border: 1px solid #B0C4DE;
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.popup button {
+    background: #A3C9F1;
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #B0C4DE;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.popup button:hover {
+    background: #B0C4DE;
+}
+
 /* Fenêtre de chat */
 .chat-window {
     width: 500px;
     height: 350px;
     background: #FFFFFF; /* Fenêtre blanche */
-    border: 2px solid #B0C4DE; /* Bordure de fenêtre */
+    border: 2px solid #A3C9F1; /* Bordure de fenêtre */
     border-radius: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
     margin: 50px auto;
     padding: 10px;
     position: relative;
+    display: none;
 }
 
 /* Barre de titre de la fenêtre */
