@@ -15,14 +15,18 @@ body {
 
 #app {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
 }
 
 #menu {
-  width: 200px;
+  width: 100%;
   background-color: #f1f1f1;
   padding: 20px;
   border-radius: 8px;
-  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 #menu h2 {
@@ -89,7 +93,7 @@ body {
 }
 
 #chat {
-  width: 400px;
+  width: 100%;
   max-width: 100%;
   padding: 20px;
   background-color: white;
@@ -114,6 +118,7 @@ body {
 
 .message span {
   font-weight: bold;
+
 }
 
 .popup {
@@ -130,4 +135,55 @@ body {
 
 .popup.error {
   background-color: #dc3545;
+}
+
+/* Style pour les appareils mobiles (max-width: 767px) */
+@media (max-width: 767px) {
+  #app {
+    flex-direction: column;
+  }
+
+  #menu {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  #user-list {
+    display: none; /* Cache la liste des utilisateurs pour mobile */
+  }
+
+  #chat {
+    width: 100%;
+    padding: 10px;
+  }
+
+  #messages {
+    height: 250px;
+  }
+
+  #message {
+    font-size: 14px;
+  }
+
+  #login-popup {
+    width: 80%;
+    max-width: 400px;
+    padding: 20px;
+  }
+}
+
+/* Style pour les petits écrans (moins de 500px) */
+@media (max-width: 500px) {
+  #login-popup {
+    width: 90%;
+    max-width: 350px;
+  }
+
+  #message {
+    font-size: 12px;
+  }
+
+  #send-btn, #login-btn {
+    font-size: 14px;
+  }
 }
