@@ -1,25 +1,11 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Cacher le menu Utilisateur pendant la sélection du pseudo */
+#user-list {
+  display: none;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f9;
-}
-
-#app {
-  display: flex;
-  flex-direction: row;  
-  width: 100%;
-  max-width: 800px;
-  padding: 20px;
-  flex-wrap: wrap;
+/* Afficher le menu utilisateur uniquement après connexion */
+#user-list-title {
+  display: none;
 }
 
 #menu {
@@ -31,124 +17,23 @@ body {
   margin-bottom: 20px;
 }
 
-#user-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-#user-list li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-#user-list .user {
-  margin-left: 10px;
-  font-size: 16px;
-}
-
-#user-list .status {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: green;
-  margin-right: 5px;
-}
-
-#login-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-#login input, #message {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-#login-btn, #send-btn {
-  padding: 10px;
-  width: 100%;
-  border: none;
-  background-color: #5cb85c;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#login-btn:hover, #send-btn:hover {
-  background-color: #4cae4c;
-}
-
-#chat {
-  width: 100%;
-  max-width: 100%;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-
-#messages {
-  height: 300px;
-  overflow-y: scroll;
-  margin-bottom: 10px;
-}
-
-.message {
-  margin: 10px 0;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.message span {
-  font-weight: bold;
-}
-
-.popup {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  display: none;
-}
-
-.popup.error {
-  background-color: #dc3545;
-}
-
-/* Cacher le titre Utilisateurs quand le pseudo n'est pas encore choisi */
-#user-list-title {
-  display: none;
-}
-
-#user-list {
-  display: none;
-}
-
-/* Pour les appareils mobiles (max-width: 767px) */
-@media (max-width: 767px) {
-  #app {
-    flex-direction: column;  
-    width: 100%;
+/* Afficher le menu sur PC (pour les écrans larges) */
+@media (min-width: 768px) {
+  #user-list {
+    display: block;
   }
 
+  #user-list-title {
+    display: block;
+  }
+
+  #messages {
+    height: 300px;
+  }
+}
+
+/* Affichage du menu Utilisateurs uniquement sur mobile */
+@media (max-width: 767px) {
   #menu {
     width: 100%;
     margin-right: 0;
@@ -170,22 +55,6 @@ body {
 
   #message {
     font-size: 14px;
-  }
-
-  #send-btn, #login-btn {
-    font-size: 14px;
-  }
-}
-
-/* Pour les petits écrans (moins de 500px) */
-@media (max-width: 500px) {
-  #login-popup {
-    width: 90%;
-    max-width: 350px;
-  }
-
-  #message {
-    font-size: 12px;
   }
 
   #send-btn, #login-btn {
