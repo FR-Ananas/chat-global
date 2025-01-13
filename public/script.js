@@ -38,6 +38,10 @@ function updateUserList() {
     li.appendChild(username);
     userList.appendChild(li);
   }
+
+  // Update the title with the number of connected users
+  const title = `Utilisateurs en ligne ${Object.keys(users).length}`;
+  document.querySelector('#menu h2').textContent = title;
 }
 
 loginBtn.addEventListener('click', () => {
@@ -48,7 +52,6 @@ loginBtn.addEventListener('click', () => {
     chatDiv.style.display = 'block';
     messageInput.disabled = false;
     sendBtn.disabled = false;
-    document.getElementById('menu').style.display = 'block'; // Affiche le menu après la connexion
   }
 });
 
@@ -64,7 +67,10 @@ sendBtn.addEventListener('click', () => {
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
+
+  // On extrait correctement les propriétés username et message du data reçu
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
@@ -74,8 +80,8 @@ socket.on('userNotification', (message) => {
 });
 
 socket.on('updateUsers', (usersList) => {
-  users = usersList;
-  updateUserList();
+  users = usersList;  // Update the users object
+  updateUserList();  // Update the user list in the UI
 });
 
 socket.on('disconnect', () => {
