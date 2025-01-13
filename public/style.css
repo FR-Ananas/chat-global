@@ -1,3 +1,4 @@
+/* Styles globaux */
 * {
   margin: 0;
   padding: 0;
@@ -17,19 +18,21 @@ body {
   display: flex;
   flex-direction: row;
   width: 100%;
-  max-width: 800px;
-  padding: 20px;
-  flex-wrap: wrap;
+  max-width: 1000px;
 }
 
+/* Menu utilisateur */
 #menu {
-  width: 200px;
+  width: 250px;
   background-color: #f1f1f1;
   padding: 20px;
   border-radius: 8px;
   margin-right: 20px;
-  margin-bottom: 20px;
-  display: none; /* Cacher par défaut jusqu'à la connexion */
+}
+
+#menu h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
 #user-list {
@@ -56,6 +59,7 @@ body {
   margin-right: 5px;
 }
 
+/* Chat */
 #login-popup {
   position: fixed;
   top: 50%;
@@ -92,7 +96,7 @@ body {
 
 #chat {
   width: 100%;
-  max-width: 100%;
+  max-width: 750px;
   padding: 20px;
   background-color: white;
   border-radius: 8px;
@@ -116,8 +120,8 @@ body {
 
 .message span {
   font-weight: bold;
-}
 
+/* Pop-up notification */
 .popup {
   position: absolute;
   top: 20px;
@@ -134,63 +138,3 @@ body {
   background-color: #dc3545;
 }
 
-/* Affichage du menu Utilisateurs seulement après la connexion */
-#menu {
-  display: block;
-}
-
-/* Cacher le titre Utilisateurs lors de la sélection du pseudo */
-#user-list-title {
-  display: none;
-}
-
-/* Pour les appareils mobiles (max-width: 767px) */
-@media (max-width: 767px) {
-  #app {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  #menu {
-    width: 100%;
-    margin-right: 0;
-  }
-
-  #user-list {
-    display: block;
-  }
-
-  #messages {
-    height: 250px;
-  }
-
-  #login-popup {
-    width: 80%;
-    max-width: 400px;
-    padding: 20px;
-  }
-
-  #message {
-    font-size: 14px;
-  }
-
-  #send-btn, #login-btn {
-    font-size: 14px;
-  }
-}
-
-/* Pour les petits écrans (moins de 500px) */
-@media (max-width: 500px) {
-  #login-popup {
-    width: 90%;
-    max-width: 350px;
-  }
-
-  #message {
-    font-size: 12px;
-  }
-
-  #send-btn, #login-btn {
-    font-size: 14px;
-  }
-}
