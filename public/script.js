@@ -63,7 +63,10 @@ sendBtn.addEventListener('click', () => {
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
+
+  // On extrait correctement les propriétés username et message du data reçu
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
