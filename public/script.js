@@ -13,7 +13,7 @@ const popup = document.createElement('div');
 popup.classList.add('popup');
 document.body.appendChild(popup);
 
-const users = {};
+let users = {};
 
 function showPopup(message, isError = false) {
   popup.textContent = message;
@@ -23,7 +23,7 @@ function showPopup(message, isError = false) {
 }
 
 function updateUserList() {
-  userList.innerHTML = '';
+  userList.innerHTML = '';  // Clear existing list
   for (let id in users) {
     const user = users[id];
     const li = document.createElement('li');
@@ -44,7 +44,6 @@ loginBtn.addEventListener('click', () => {
   const username = usernameInput.value.trim();
   if (username) {
     socket.emit('newUser', username);
-    users[username] = { username, status: 'connected' };
     loginPopup.style.display = 'none';
     chatDiv.style.display = 'block';
     messageInput.disabled = false;
@@ -73,8 +72,9 @@ socket.on('userNotification', (message) => {
   showPopup(message);
 });
 
-socket.on('updateUsers', (users) => {
-  updateUserList();
+socket.on('updateUsers', (usersList) => {
+  users = usersList;  // Update the users object
+  updateUserList();  // Update the user list in the UI
 });
 
 socket.on('disconnect', () => {
