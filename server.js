@@ -13,6 +13,7 @@ const users = {};
 io.on('connection', (socket) => {
   socket.on('newUser', (username) => {
     users[socket.id] = { username, status: 'connected' };
+    socket.broadcast.emit('userNotification', `${username} a rejoint le chat.`);
     io.emit('updateUsers', users);
   });
 
@@ -22,9 +23,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    if (users[socket.id]) {
-      users[socket.id].status = 'disconnected';
+    const user = users[socket.id];
+    if (user) {
+      user.status = 'disconnected';
+      io.emit('userNotification', `${user.username} a quitté le chat.`);
       io.emit('updateUsers', users);
+
+      // Supprimer l'utilisateur après un délai (pour afficher le point rouge temporairement)
       setTimeout(() => {
         delete users[socket.id];
         io.emit('updateUsers', users);
