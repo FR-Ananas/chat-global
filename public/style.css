@@ -1,3 +1,4 @@
+/* Définir les éléments de la page */
 * {
   margin: 0;
   padding: 0;
@@ -61,6 +62,10 @@ body {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#login {
+  display: block;
 }
 
 #login input, #message {
