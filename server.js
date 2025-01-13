@@ -20,28 +20,39 @@ const users = {};
 io.on('connection', (socket) => {
   console.log('Un utilisateur est connecté.');
 
+  // Envoyer la liste des utilisateurs connectés au nouvel utilisateur
+  socket.emit('userList', users);
+
   // Événement : un nouvel utilisateur choisit un pseudo
   socket.on('newUser', (username) => {
-    users[socket.id] = username; // Associer le pseudo à l'ID du socket
+    users[socket.id] = { username, status: 'connected' }; // Associer le pseudo à l'ID du socket
     console.log(`${username} a rejoint le chat.`);
 
-    // Envoyer la liste des utilisateurs aux clients
+    // Informer tous les utilisateurs de la nouvelle connexion
     io.emit('userJoined', { id: socket.id, username });
   });
 
   // Événement : un utilisateur envoie un message
   socket.on('message', (data) => {
-    console.log(`${data.username}: ${data.message}`);
-    io.emit('message', data);
+    const username = users[socket.id]?.username;
+    if (username) {
+      console.log(`${username}: ${data.message}`);
+      io.emit('message', { username, message: data.message });
+    }
   });
 
   // Événement : un utilisateur se déconnecte
   socket.on('disconnect', () => {
-    const username = users[socket.id];
+    const username = users[socket.id]?.username;
     if (username) {
       console.log(`${username} s'est déconnecté.`);
-      delete users[socket.id];
       io.emit('userLeft', { id: socket.id, username });
+      users[socket.id].status = 'disconnected';
+
+      // Supprimer l'utilisateur de la liste après un délai (pour effet visuel côté client)
+      setTimeout(() => {
+        delete users[socket.id];
+      }, 3000);
     }
   });
 });
