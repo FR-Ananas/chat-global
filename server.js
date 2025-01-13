@@ -11,8 +11,6 @@ app.use(express.static('public'));
 const users = {};
 
 io.on('connection', (socket) => {
-  console.log(`Un utilisateur s'est connecté : ${socket.id}`);
-
   socket.on('newUser', (username) => {
     users[socket.id] = { username, status: 'connected' };
     socket.broadcast.emit('userNotification', `${username} a rejoint le chat.`);
@@ -21,8 +19,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     const username = users[socket.id]?.username || 'Anonyme';
-    // Envoi du message à tous les utilisateurs
-    io.emit('message', { username, message });
+    io.emit('message', { username, message: message.message });
   });
 
   socket.on('disconnect', () => {
@@ -32,7 +29,6 @@ io.on('connection', (socket) => {
       io.emit('userNotification', `${user.username} a quitté le chat.`);
       io.emit('updateUsers', users);
 
-      // Supprimer l'utilisateur après un délai (pour afficher le point rouge temporairement)
       setTimeout(() => {
         delete users[socket.id];
         io.emit('updateUsers', users);
