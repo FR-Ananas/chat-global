@@ -1,4 +1,78 @@
-/* Notifications éphémères */
+/* Réinitialisation des styles par défaut */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styles généraux du body */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  overflow: hidden; /* Empêche le défilement de la page lorsque la pop-up apparaît */
+}
+
+/* Conteneur principal de l'application */
+#app {
+  width: 400px;
+  max-width: 100%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour le formulaire de connexion */
+#login input, #message {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Boutons de connexion et d'envoi */
+#login-btn, #send-btn {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  background-color: #5cb85c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#login-btn:hover, #send-btn:hover {
+  background-color: #4cae4c;
+}
+
+/* Zone des messages */
+#messages {
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+  padding-right: 10px; /* Evite que les messages touchent le bord droit */
+}
+
+/* Style des messages dans le chat */
+.message {
+  margin: 10px 0;
+  padding: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Style du nom d'utilisateur dans le message */
+.message span {
+  font-weight: bold;
+}
+
+/* Notifications éphémères (pop-ups) */
 .notification {
   position: fixed;
   bottom: 20px;
@@ -27,4 +101,9 @@
     opacity: 0;
     transform: translateX(-50%) translateY(-20px);
   }
+}
+
+/* Cache les notifications si elles existent déjà */
+.notification + .notification {
+  margin-top: 10px; /* Ajoute un peu d'espace entre les notifications */
 }
