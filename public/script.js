@@ -19,6 +19,20 @@ function displayMessage(username, message) {
   messagesDiv.scrollTop = messagesDiv.scrollHeight; // Faites défiler vers le bas
 }
 
+// Fonction pour afficher une notification éphémère (pop-up)
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.classList.add('notification');
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  // Supprimer la notification après 3 secondes
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
+
 // Lorsque l'utilisateur clique sur "Se connecter"
 loginBtn.addEventListener('click', () => {
   const username = usernameInput.value.trim();
@@ -44,7 +58,12 @@ socket.on('message', (data) => {
   displayMessage(data.username, data.message);
 });
 
-// Recevoir la notification d'un nouvel utilisateur ou de quelqu'un qui se déconnecte
+// Recevoir une notification lorsqu'un nouvel utilisateur se connecte
 socket.on('userJoined', (username) => {
-  displayMessage('Système', `${username} a rejoint le chat.`);
+  showNotification(`${username} a rejoint le chat.`);
+});
+
+// Recevoir une notification lorsqu'un utilisateur se déconnecte
+socket.on('userLeft', (username) => {
+  showNotification(`${username} a quitté le chat.`);
 });
