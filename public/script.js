@@ -7,8 +7,12 @@ const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('username');
 const messageInput = document.getElementById('message');
 const messagesDiv = document.getElementById('messages');
+const userList = document.getElementById('user-list');
 const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
+
+// Liste locale des utilisateurs
+let users = {};
 
 // Fonction pour afficher un message dans le chat
 function displayMessage(username, message) {
@@ -19,18 +23,25 @@ function displayMessage(username, message) {
   messagesDiv.scrollTop = messagesDiv.scrollHeight; // Faites défiler vers le bas
 }
 
-// Fonction pour afficher une notification éphémère (pop-up)
-function showNotification(message) {
-  const notification = document.createElement('div');
-  notification.classList.add('notification');
-  notification.textContent = message;
+// Fonction pour mettre à jour la liste des utilisateurs
+function updateUserList() {
+  userList.innerHTML = '';
+  for (const [id, { username, status }] of Object.entries(users)) {
+    const userItem = document.createElement('li');
+    userItem.innerHTML = `
+      <span class="status ${status === 'connected' ? 'green' : 'red'}"></span>
+      ${username}
+    `;
+    userList.appendChild(userItem);
 
-  document.body.appendChild(notification);
-
-  // Supprimer la notification après 3 secondes
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
+    // Supprimer l'utilisateur déconnecté après 3 secondes
+    if (status === 'disconnected') {
+      setTimeout(() => {
+        delete users[id];
+        updateUserList();
+      }, 3000);
+    }
+  }
 }
 
 // Lorsque l'utilisateur clique sur "Se connecter"
@@ -58,12 +69,16 @@ socket.on('message', (data) => {
   displayMessage(data.username, data.message);
 });
 
-// Recevoir une notification lorsqu'un nouvel utilisateur se connecte
-socket.on('userJoined', (username) => {
-  showNotification(`${username} a rejoint le chat.`);
+// Mise à jour de la liste des utilisateurs lorsqu'un nouvel utilisateur se connecte
+socket.on('userJoined', (data) => {
+  users[data.id] = { username: data.username, status: 'connected' };
+  updateUserList();
 });
 
-// Recevoir une notification lorsqu'un utilisateur se déconnecte
-socket.on('userLeft', (username) => {
-  showNotification(`${username} a quitté le chat.`);
+// Mise à jour de la liste des utilisateurs lorsqu'un utilisateur se déconnecte
+socket.on('userLeft', (data) => {
+  if (users[data.id]) {
+    users[data.id].status = 'disconnected';
+    updateUserList();
+  }
 });
