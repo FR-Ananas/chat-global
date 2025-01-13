@@ -11,6 +11,8 @@ app.use(express.static('public'));
 const users = {};
 
 io.on('connection', (socket) => {
+  console.log(`Un utilisateur s'est connecté : ${socket.id}`);
+
   socket.on('newUser', (username) => {
     users[socket.id] = { username, status: 'connected' };
     socket.broadcast.emit('userNotification', `${username} a rejoint le chat.`);
@@ -19,6 +21,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     const username = users[socket.id]?.username || 'Anonyme';
+    // Envoi du message à tous les utilisateurs
     io.emit('message', { username, message });
   });
 
