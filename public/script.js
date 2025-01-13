@@ -1,6 +1,7 @@
 const socket = io();
 
 const loginDiv = document.getElementById('login');
+const loginPopup = document.getElementById('login-popup');
 const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('username');
 const messageInput = document.getElementById('message');
@@ -42,10 +43,12 @@ function updateUserList() {
 loginBtn.addEventListener('click', () => {
   const username = usernameInput.value.trim();
   if (username) {
-    socket.emit('newUser', username);  // Envoi du pseudo au serveur
-    users[username] = { username, status: 'connected' };  // Ajouter l'utilisateur à la liste
-    loginDiv.style.display = 'none';  // Masquer le formulaire de connexion
-    chatDiv.style.display = 'block';  // Afficher le chat
+    socket.emit('newUser', username);
+    users[username] = { username, status: 'connected' };
+    loginPopup.style.display = 'none';
+    chatDiv.style.display = 'block';
+    messageInput.disabled = false;
+    sendBtn.disabled = false;
   }
 });
 
@@ -53,8 +56,8 @@ sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
   const username = usernameInput.value.trim();
   if (message) {
-    socket.emit('message', { username, message });  // Envoi du message au serveur
-    messageInput.value = '';  // Réinitialiser le champ de texte
+    socket.emit('message', { username, message });
+    messageInput.value = '';
   }
 });
 
@@ -63,7 +66,7 @@ socket.on('message', (data) => {
   messageDiv.classList.add('message');
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
   messagesDiv.appendChild(messageDiv);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Faire défiler vers le bas
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
 
 socket.on('userNotification', (message) => {
