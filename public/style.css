@@ -1,4 +1,3 @@
-/* Réinitialisation */
 * {
   margin: 0;
   padding: 0;
@@ -16,44 +15,19 @@ body {
 
 #app {
   display: flex;
-  width: 800px;
-  max-width: 100%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 }
 
-/* Sidebar (menu latéral) */
-#sidebar {
+#menu {
   width: 200px;
-  background-color: #333;
-  color: white;
-  display: flex;
-  flex-direction: column;
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  margin-right: 20px;
 }
 
-#toggle-users-btn {
-  background-color: #444;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-#toggle-users-btn:hover {
-  background-color: #555;
-}
-
-#user-list-container {
-  display: none; /* Caché par défaut */
-  padding: 10px;
-}
-
-#user-list-container h3 {
-  font-size: 18px;
+#menu h2 {
   margin-bottom: 10px;
+  font-size: 18px;
 }
 
 #user-list {
@@ -65,31 +39,28 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  font-size: 14px;
 }
 
-#user-list li .status {
+#user-list .user {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+#user-list .status {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 10px;
+  background-color: green;
+  margin-right: 5px;
 }
 
-/* Statut des utilisateurs */
-.status.green {
-  background-color: #5cb85c;
-}
-
-.status.red {
-  background-color: #d9534f;
-}
-
-/* Zone principale */
-#main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+#chat {
+  width: 400px;
+  max-width: 100%;
   padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #login input, #message {
@@ -115,7 +86,6 @@ body {
 }
 
 #messages {
-  flex: 1;
   height: 300px;
   overflow-y: scroll;
   margin-bottom: 10px;
@@ -133,17 +103,18 @@ body {
   font-weight: bold;
 }
 
-/* Pop-up notifications */
-#popup {
-  position: fixed;
+.popup {
+  position: absolute;
   top: 20px;
-  right: 20px;
-  background-color: #444;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745;
   color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 14px;
-  opacity: 0.9;
-  z-index: 1000;
+  padding: 10px;
+  border-radius: 5px;
   display: none;
+}
+
+.popup.error {
+  background-color: #dc3545;
 }
