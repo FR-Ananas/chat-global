@@ -48,6 +48,7 @@ loginBtn.addEventListener('click', () => {
     chatDiv.style.display = 'block';
     messageInput.disabled = false;
     sendBtn.disabled = false;
+    document.getElementById('menu').style.display = 'block'; // Affiche le menu après la connexion
   }
 });
 
@@ -63,11 +64,7 @@ sendBtn.addEventListener('click', () => {
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
-
-  // Assurer que data.message soit une chaîne de caractères avant l'affichage
-  const messageContent = data.message ? data.message : 'Message inconnu';
-  messageDiv.innerHTML = `<span>${data.username} :</span> ${messageContent}`;
-  
+  messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
@@ -77,8 +74,8 @@ socket.on('userNotification', (message) => {
 });
 
 socket.on('updateUsers', (usersList) => {
-  users = usersList;  // Update the users object
-  updateUserList();  // Update the user list in the UI
+  users = usersList;
+  updateUserList();
 });
 
 socket.on('disconnect', () => {
