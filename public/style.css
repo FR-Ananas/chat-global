@@ -1,109 +1,52 @@
-/* Réinitialisation des styles par défaut */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Styles généraux du body */
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f9;
-  overflow: hidden; /* Empêche le défilement de la page lorsque la pop-up apparaît */
-}
-
-/* Conteneur principal de l'application */
-#app {
-  width: 400px;
-  max-width: 100%;
+/* Sidebar (menu latéral) */
+#sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 200px;
+  background-color: #333;
+  color: white;
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Style pour le formulaire de connexion */
-#login input, #message {
-  width: 100%;
-  padding: 10px;
+#sidebar h3 {
   margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  font-size: 18px;
+  text-align: center;
 }
 
-/* Boutons de connexion et d'envoi */
-#login-btn, #send-btn {
-  padding: 10px;
-  width: 100%;
-  border: none;
+#user-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#user-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+#user-list li .status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Statut des utilisateurs */
+.status.green {
   background-color: #5cb85c;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-#login-btn:hover, #send-btn:hover {
-  background-color: #4cae4c;
+.status.red {
+  background-color: #d9534f;
 }
 
-/* Zone des messages */
-#messages {
-  height: 300px;
-  overflow-y: scroll;
-  margin-bottom: 10px;
-  padding-right: 10px; /* Evite que les messages touchent le bord droit */
-}
-
-/* Style des messages dans le chat */
-.message {
-  margin: 10px 0;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-/* Style du nom d'utilisateur dans le message */
-.message span {
-  font-weight: bold;
-}
-
-/* Notifications éphémères (pop-ups) */
-.notification {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  animation: fadeInOut 3s ease-in-out;
-}
-
-/* Animation pour faire apparaître et disparaître la notification */
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(20px);
-  }
-  10%, 90% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
-  }
-}
-
-/* Cache les notifications si elles existent déjà */
-.notification + .notification {
-  margin-top: 10px; /* Ajoute un peu d'espace entre les notifications */
+/* Zone principale */
+#main {
+  margin-left: 200px; /* Décalage pour le menu latéral */
+  padding: 20px;
 }
