@@ -8,30 +8,23 @@
 </head>
 <body>
   <div id="app">
-    <!-- Menu déroulant des utilisateurs -->
-    <div id="sidebar">
-      <button id="toggle-users-btn">👥 Utilisateurs</button>
-      <div id="user-list-container">
-        <h3>Connectés</h3>
-        <ul id="user-list"></ul>
+    <div id="menu">
+      <div id="user-list">
+        <h2>Utilisateurs</h2>
+        <ul id="users"></ul>
       </div>
     </div>
-
-    <!-- Zone principale : login et chat -->
-    <div id="main">
+    
+    <div id="chat">
       <div id="login">
         <input type="text" id="username" placeholder="Choisis un pseudo" />
         <button id="login-btn">Se connecter</button>
       </div>
-      <div id="chat" style="display: none;">
-        <div id="messages"></div>
-        <input type="text" id="message" placeholder="Tape ton message..." />
-        <button id="send-btn">Envoyer</button>
-      </div>
+      
+      <div id="messages"></div>
+      <input type="text" id="message" placeholder="Tape ton message..." />
+      <button id="send-btn">Envoyer</button>
     </div>
-
-    <!-- Pop-up pour notifications -->
-    <div id="popup" style="display: none;"></div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
