@@ -1,172 +1,121 @@
-/* Arrière-plan bleu ciel comme Windows XP */
+/* Style de base */
 body {
-    background: #87CEFA; /* Ciel bleu */
     font-family: 'Tahoma', sans-serif;
+    background-color: #008080;
     margin: 0;
     padding: 0;
-    height: 100%;
 }
 
-/* Popup pour choisir un pseudo */
+h3 {
+    color: white;
+    font-size: 20px;
+}
+
 .popup {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
     justify-content: center;
-    z-index: 1000;
+    align-items: center;
 }
 
 .popup-window {
-    background: #FFFFFF;
+    background-color: #c0c0c0;
     padding: 20px;
-    border: 2px solid #A3C9F1;
-    border-radius: 10px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.popup h3 {
+    border: 2px solid #000080;
     text-align: center;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.popup input {
-    padding: 8px;
-    font-size: 14px;
-    width: 200px;
-    margin-bottom: 10px;
-    border: 1px solid #B0C4DE;
     border-radius: 5px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    width: 300px;
 }
 
-.popup button {
-    background: #A3C9F1;
-    color: #000;
-    padding: 5px 15px;
-    border-radius: 5px;
-    border: 1px solid #B0C4DE;
-    cursor: pointer;
-    font-size: 14px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.popup button:hover {
-    background: #B0C4DE;
-}
-
-/* Fenêtre de chat */
 .chat-window {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 500px;
-    height: 350px;
-    background: #FFFFFF; /* Fenêtre blanche */
-    border: 2px solid #A3C9F1; /* Bordure de fenêtre */
-    border-radius: 10px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
-    margin: 50px auto;
-    padding: 10px;
-    position: relative;
+    background-color: #c0c0c0;
+    border: 2px solid #000080;
+    border-radius: 5px;
     display: none;
 }
 
-/* Barre de titre de la fenêtre */
-.chat-window .title-bar {
-    background: #A3C9F1; /* Bleu clair Windows XP */
-    color: #000;
+.title-bar {
+    background-color: #000080;
+    color: white;
     padding: 5px;
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 2px solid #B0C4DE; /* Séparation en bas */
+    font-size: 16px;
+    border-radius: 5px 5px 0 0;
 }
 
-/* Fenêtre de message */
 .messages {
-    height: 250px;
+    max-height: 400px;
     overflow-y: auto;
-    margin: 10px;
-    background: #F0F8FF; /* Fond bleu clair pour les messages */
-    border: 1px solid #B0C4DE;
     padding: 10px;
-    font-size: 14px;
-    color: #000;
-}
-
-/* Champ de saisie */
-.input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #B0C4DE;
-    border-radius: 5px;
-    background: #F5F5F5;
-    font-size: 14px;
-}
-
-/* Boutons comme ceux de Windows XP */
-.button {
-    background: #A3C9F1;
-    color: #000;
-    padding: 5px 15px;
-    border-radius: 5px;
-    border: 1px solid #B0C4DE;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.button:hover {
-    background: #B0C4DE;
-}
-
-/* Messages entrants et sortants */
-.message {
-    padding: 5px;
+    background-color: white;
+    border-radius: 0 0 5px 5px;
     margin-bottom: 10px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 5px;
     border-radius: 5px;
-    max-width: 80%;
 }
 
 .message.sent {
-    background: #D3F9D8; /* Message envoyé en vert clair */
-    align-self: flex-end;
+    background-color: #c0c0c0;
+    text-align: right;
 }
 
 .message.received {
-    background: #F0F0F0; /* Message reçu en gris clair */
-    align-self: flex-start;
+    background-color: #e0e0e0;
+    text-align: left;
 }
 
-/* Barre de tâches */
+.input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #000080;
+    border-radius: 5px;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #000080;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button:hover {
+    background-color: #3333cc;
+}
+
 .taskbar {
-    background: #A3C9F1;
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px;
+    background-color: #c0c0c0;
+    text-align: center;
+    padding: 10px;
 }
 
 .taskbar-button {
-    background: #87CEFA;
-    color: #000;
-    border: 1px solid #B0C4DE;
-    border-radius: 5px;
-    padding: 5px 15px;
+    background-color: #000080;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
 }
 
-.taskbar-icons {
-    display: flex;
-    gap: 10px;
+.taskbar-button:hover {
+    background-color: #3333cc;
 }
