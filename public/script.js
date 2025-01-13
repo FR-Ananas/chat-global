@@ -8,11 +8,19 @@ const usernameInput = document.getElementById('username');
 const messageInput = document.getElementById('message');
 const messagesDiv = document.getElementById('messages');
 const userList = document.getElementById('user-list');
+const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+const userListContainer = document.getElementById('user-list-container');
 const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
 
 // Liste locale des utilisateurs
 let users = {};
+
+// Gestion du menu déroulant
+toggleSidebarBtn.addEventListener('click', () => {
+  const isVisible = userListContainer.style.display === 'block';
+  userListContainer.style.display = isVisible ? 'none' : 'block';
+});
 
 // Fonction pour afficher un message dans le chat
 function displayMessage(username, message) {
@@ -57,9 +65,8 @@ loginBtn.addEventListener('click', () => {
 // Lorsque l'utilisateur clique sur "Envoyer"
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
-  const username = usernameInput.value.trim();
   if (message) {
-    socket.emit('message', { username, message }); // Envoi du message au serveur
+    socket.emit('message', { message }); // Envoi du message au serveur
     messageInput.value = ''; // Réinitialiser l'input
   }
 });
@@ -69,13 +76,19 @@ socket.on('message', (data) => {
   displayMessage(data.username, data.message);
 });
 
-// Mise à jour de la liste des utilisateurs lorsqu'un nouvel utilisateur se connecte
+// Recevoir la liste des utilisateurs connectés au démarrage
+socket.on('userList', (connectedUsers) => {
+  users = connectedUsers;
+  updateUserList();
+});
+
+// Gestion des nouveaux utilisateurs
 socket.on('userJoined', (data) => {
   users[data.id] = { username: data.username, status: 'connected' };
   updateUserList();
 });
 
-// Mise à jour de la liste des utilisateurs lorsqu'un utilisateur se déconnecte
+// Gestion des déconnexions
 socket.on('userLeft', (data) => {
   if (users[data.id]) {
     users[data.id].status = 'disconnected';
