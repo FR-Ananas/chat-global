@@ -15,17 +15,19 @@ body {
 
 #app {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;  /* Sur les grands écrans, on aura le chat à gauche et la liste à droite */
   width: 100%;
   max-width: 800px;
   padding: 20px;
+  flex-wrap: wrap;
 }
 
 #menu {
-  width: 100%;
+  width: 200px;
   background-color: #f1f1f1;
   padding: 20px;
   border-radius: 8px;
+  margin-right: 20px;
   margin-bottom: 20px;
 }
 
@@ -118,7 +120,6 @@ body {
 
 .message span {
   font-weight: bold;
-
 }
 
 .popup {
@@ -137,32 +138,24 @@ body {
   background-color: #dc3545;
 }
 
-/* Style pour les appareils mobiles (max-width: 767px) */
+/* Pour les appareils mobiles (max-width: 767px) */
 @media (max-width: 767px) {
   #app {
-    flex-direction: column;
+    flex-direction: column;  /* Le chat et le menu utilisateur seront l'un sous l'autre */
+    width: 100%;
   }
 
   #menu {
     width: 100%;
-    margin-bottom: 20px;
+    margin-right: 0;
   }
 
   #user-list {
-    display: none; /* Cache la liste des utilisateurs pour mobile */
-  }
-
-  #chat {
-    width: 100%;
-    padding: 10px;
+    display: block;  /* Affichage de la liste des utilisateurs sur mobile */
   }
 
   #messages {
     height: 250px;
-  }
-
-  #message {
-    font-size: 14px;
   }
 
   #login-popup {
@@ -170,9 +163,17 @@ body {
     max-width: 400px;
     padding: 20px;
   }
+
+  #message {
+    font-size: 14px;
+  }
+
+  #send-btn, #login-btn {
+    font-size: 14px;
+  }
 }
 
-/* Style pour les petits écrans (moins de 500px) */
+/* Pour les petits écrans (moins de 500px) */
 @media (max-width: 500px) {
   #login-popup {
     width: 90%;
