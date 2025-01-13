@@ -64,8 +64,9 @@ socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
 
-  // On extrait correctement les propriétés username et message du data reçu
-  messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  // Assurer que data.message soit une chaîne de caractères avant l'affichage
+  const messageContent = data.message ? data.message : 'Message inconnu';
+  messageDiv.innerHTML = `<span>${data.username} :</span> ${messageContent}`;
   
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
