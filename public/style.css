@@ -1,20 +1,65 @@
+/* Styles globaux */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+#app {
+  width: 600px;
+  max-width: 100%;
+  display: flex;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Sidebar (menu latéral) */
 #sidebar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
+  position: relative;
   width: 200px;
   background-color: #333;
   color: white;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-#sidebar h3 {
+#toggle-sidebar-btn {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 16px;
+}
+
+#toggle-sidebar-btn:hover {
+  background-color: #555;
+}
+
+#user-list-container {
+  display: none; /* Caché par défaut */
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+#user-list-container h3 {
+  text-align: center;
   margin-bottom: 10px;
   font-size: 18px;
-  text-align: center;
 }
 
 #user-list {
@@ -36,7 +81,6 @@
   margin-right: 10px;
 }
 
-/* Statut des utilisateurs */
 .status.green {
   background-color: #5cb85c;
 }
@@ -47,6 +91,46 @@
 
 /* Zone principale */
 #main {
-  margin-left: 200px; /* Décalage pour le menu latéral */
+  flex-grow: 1;
   padding: 20px;
+}
+
+#login input, #message {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#login-btn, #send-btn {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  background-color: #5cb85c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#login-btn:hover, #send-btn:hover {
+  background-color: #4cae4c;
+}
+
+#messages {
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.message span {
+  font-weight: bold;
 }
