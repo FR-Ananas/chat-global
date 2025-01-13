@@ -25,27 +25,23 @@ io.on('connection', (socket) => {
     users[socket.id] = username; // Associer le pseudo à l'ID du socket
     console.log(`${username} a rejoint le chat.`);
 
-    // Notifier les autres utilisateurs qu'une nouvelle personne a rejoint
-    socket.broadcast.emit('userJoined', username);
+    // Envoyer la liste des utilisateurs aux clients
+    io.emit('userJoined', { id: socket.id, username });
   });
 
   // Événement : un utilisateur envoie un message
   socket.on('message', (data) => {
     console.log(`${data.username}: ${data.message}`);
-    io.emit('message', data); // Diffuser le message à tous les utilisateurs
+    io.emit('message', data);
   });
 
   // Événement : un utilisateur se déconnecte
   socket.on('disconnect', () => {
-    const username = users[socket.id]; // Récupérer le pseudo de l'utilisateur
+    const username = users[socket.id];
     if (username) {
       console.log(`${username} s'est déconnecté.`);
-      
-      // Supprimer l'utilisateur de la liste
       delete users[socket.id];
-      
-      // Notifier les autres utilisateurs que cette personne a quitté
-      socket.broadcast.emit('userLeft', username);
+      io.emit('userLeft', { id: socket.id, username });
     }
   });
 });
