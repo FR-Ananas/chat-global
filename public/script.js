@@ -8,19 +8,13 @@ const usernameInput = document.getElementById('username');
 const messageInput = document.getElementById('message');
 const messagesDiv = document.getElementById('messages');
 const userList = document.getElementById('user-list');
-const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
-const userListContainer = document.getElementById('user-list-container');
 const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
+const toggleUsersBtn = document.getElementById('toggle-users-btn');
+const userListContainer = document.getElementById('user-list-container');
 
 // Liste locale des utilisateurs
 let users = {};
-
-// Gestion du menu déroulant
-toggleSidebarBtn.addEventListener('click', () => {
-  const isVisible = userListContainer.style.display === 'block';
-  userListContainer.style.display = isVisible ? 'none' : 'block';
-});
 
 // Fonction pour afficher un message dans le chat
 function displayMessage(username, message) {
@@ -52,6 +46,12 @@ function updateUserList() {
   }
 }
 
+// Basculer l'affichage du menu utilisateur
+toggleUsersBtn.addEventListener('click', () => {
+  userListContainer.style.display =
+    userListContainer.style.display === 'none' ? 'block' : 'none';
+});
+
 // Lorsque l'utilisateur clique sur "Se connecter"
 loginBtn.addEventListener('click', () => {
   const username = usernameInput.value.trim();
@@ -66,32 +66,18 @@ loginBtn.addEventListener('click', () => {
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
   if (message) {
-    socket.emit('message', { message }); // Envoi du message au serveur
+    socket.emit('message', message); // Envoi du message au serveur
     messageInput.value = ''; // Réinitialiser l'input
   }
 });
 
-// Recevoir les messages du serveur
-socket.on('message', (data) => {
-  displayMessage(data.username, data.message);
-});
-
-// Recevoir la liste des utilisateurs connectés au démarrage
-socket.on('userList', (connectedUsers) => {
-  users = connectedUsers;
+// Mise à jour des utilisateurs lorsqu'un utilisateur rejoint
+socket.on('updateUsers', (serverUsers) => {
+  users = serverUsers;
   updateUserList();
 });
 
-// Gestion des nouveaux utilisateurs
-socket.on('userJoined', (data) => {
-  users[data.id] = { username: data.username, status: 'connected' };
-  updateUserList();
-});
-
-// Gestion des déconnexions
-socket.on('userLeft', (data) => {
-  if (users[data.id]) {
-    users[data.id].status = 'disconnected';
-    updateUserList();
-  }
+// Réception des messages du serveur
+socket.on('message', ({ username, message }) => {
+  displayMessage(username, message);
 });
