@@ -55,7 +55,7 @@ sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
   const username = usernameInput.value.trim();
   if (message) {
-    socket.emit('message', message); // Envoi du message sans objet supplémentaire
+    socket.emit('message', { username, message });
     messageInput.value = '';
   }
 });
