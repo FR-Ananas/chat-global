@@ -74,7 +74,7 @@ socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
 
-  // Here we ensure the message is displayed correctly
+  // Vérification du message avant l'affichage
   if (typeof data.message === 'string') {
     messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
   } else {
