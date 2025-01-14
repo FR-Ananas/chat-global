@@ -19,28 +19,19 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     const username = users[socket.id]?.username || 'Anonyme';
-
-    // Vérification du type de message avant envoi
-    if (typeof message === 'string') {
+    if (typeof message === 'string' && message.trim().length > 0) {
       io.emit('message', { username, message });
     } else {
-      console.error("Le message n'est pas une chaîne:", message);
-      io.emit('message', { username, message: "(Erreur de message)" });
+      socket.emit('message', { username: 'Serveur', message: 'Message invalide.' });
     }
   });
 
   socket.on('disconnect', () => {
     const user = users[socket.id];
     if (user) {
-      user.status = 'disconnected';
       io.emit('userNotification', `${user.username} a quitté le chat.`);
+      delete users[socket.id];
       io.emit('updateUsers', users);
-
-      // Supprimer l'utilisateur après un délai (pour afficher le point rouge temporairement)
-      setTimeout(() => {
-        delete users[socket.id];
-        io.emit('updateUsers', users);
-      }, 3000);
     }
   });
 });
