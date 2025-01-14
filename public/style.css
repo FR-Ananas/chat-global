@@ -73,8 +73,10 @@ body {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Masque le rectangle indésirable */
   z-index: 1000;
+  border: none; /* Assure qu'il n'y ait pas de bordure par défaut */
+  outline: none; /* Retire toute bordure ou ombre qui pourrait apparaître par défaut */
 }
 
 #login input, #message {
