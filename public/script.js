@@ -1,5 +1,6 @@
 const socket = io();
 
+const loginDiv = document.getElementById('login');
 const loginPopup = document.getElementById('login-popup');
 const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('username');
@@ -9,9 +10,7 @@ const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
 const userList = document.getElementById('users');
 const userCount = document.getElementById('user-count');
-const popup = document.createElement('div');
-popup.classList.add('popup');
-document.body.appendChild(popup);
+const backgroundOverlay = document.getElementById('background-overlay'); // Sélection du fond semi-transparent
 
 let users = {};
 
@@ -23,7 +22,7 @@ function showPopup(message, isError = false) {
 }
 
 function updateUserList() {
-  userList.innerHTML = '';
+  userList.innerHTML = '';  // Clear existing list
   let onlineUsers = 0;
 
   for (let id in users) {
@@ -45,6 +44,7 @@ function updateUserList() {
     }
   }
 
+  // Update user count
   userCount.textContent = onlineUsers;
 }
 
@@ -56,13 +56,15 @@ loginBtn.addEventListener('click', () => {
     chatDiv.style.display = 'block';
     messageInput.disabled = false;
     sendBtn.disabled = false;
+    backgroundOverlay.style.display = 'none'; // Masquer le fond lorsque le pop-up disparaît
   }
 });
 
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
+  const username = usernameInput.value.trim();
   if (message) {
-    socket.emit('message', message);
+    socket.emit('message', { username, message });
     messageInput.value = '';
   }
 });
@@ -84,6 +86,8 @@ socket.on('updateUsers', (usersList) => {
   updateUserList();
 });
 
-socket.on('disconnect', () => {
-  showPopup('Vous avez été déconnecté.', true);
-});
+// Show the background overlay when the login popup is visible
+function showLoginPopup() {
+  loginPopup.style.display = 'block';
+  backgroundOverlay.style.display = 'block'; // Afficher le fond lorsque le pop-up est visible
+}
