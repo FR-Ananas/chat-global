@@ -74,8 +74,13 @@ socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
 
-  // Correcting the message structure and avoiding [object Object] issue
-  messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  // Here we ensure the message is displayed correctly
+  if (typeof data.message === 'string') {
+    messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  } else {
+    console.error("Message is not a string:", data.message);
+    messageDiv.innerHTML = `<span>${data.username} :</span> (Erreur de message)`;
+  }
 
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
