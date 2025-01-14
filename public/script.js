@@ -1,134 +1,89 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+const socket = io();
+
+const loginPopup = document.getElementById('login-popup');
+const chatDiv = document.getElementById('chat');
+const usernameInput = document.getElementById('username');
+const messageInput = document.getElementById('message');
+const messagesDiv = document.getElementById('messages');
+const loginBtn = document.getElementById('login-btn');
+const sendBtn = document.getElementById('send-btn');
+const userList = document.getElementById('users');
+const userCount = document.getElementById('user-count');
+const popup = document.createElement('div');
+popup.classList.add('popup');
+document.body.appendChild(popup);
+
+let users = {};
+
+function showPopup(message, isError = false) {
+  popup.textContent = message;
+  popup.classList.toggle('error', isError);
+  popup.style.display = 'block';
+  setTimeout(() => popup.style.display = 'none', 3000);
 }
 
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f9;
+function updateUserList() {
+  userList.innerHTML = '';
+  let onlineUsers = 0;
+
+  for (let id in users) {
+    const user = users[id];
+    const li = document.createElement('li');
+    const status = document.createElement('div');
+    status.classList.add('status');
+    status.style.backgroundColor = user.status === 'connected' ? 'green' : 'red';
+    const username = document.createElement('span');
+    username.classList.add('user');
+    username.textContent = user.username;
+
+    li.appendChild(status);
+    li.appendChild(username);
+    userList.appendChild(li);
+
+    if (user.status === 'connected') {
+      onlineUsers++;
+    }
+  }
+
+  userCount.textContent = onlineUsers;
 }
 
-#app {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+loginBtn.addEventListener('click', () => {
+  const username = usernameInput.value.trim();
+  if (username) {
+    socket.emit('newUser', username);
+    loginPopup.style.display = 'none';
+    chatDiv.style.display = 'block';
+    messageInput.disabled = false;
+    sendBtn.disabled = false;
+  }
+});
 
-#chat {
-  width: 100%;
-  display: none;
-}
+sendBtn.addEventListener('click', () => {
+  const message = messageInput.value.trim();
+  if (message) {
+    socket.emit('message', message);
+    messageInput.value = '';
+  }
+});
 
-#user-menu {
-  background-color: #f1f1f1;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  width: 100%;
-}
+socket.on('message', (data) => {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message');
+  messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  messagesDiv.appendChild(messageDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
 
-#user-menu h2 {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
+socket.on('userNotification', (message) => {
+  showPopup(message);
+});
 
-#users {
-  list-style-type: none;
-  padding: 0;
-}
+socket.on('updateUsers', (usersList) => {
+  users = usersList;
+  updateUserList();
+});
 
-#users li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-#users .user {
-  margin-left: 10px;
-  font-size: 16px;
-}
-
-#users .status {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 5px;
-}
-
-#login-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-#login input, #message {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-#login-btn, #send-btn {
-  padding: 10px;
-  width: 100%;
-  border: none;
-  background-color: #5cb85c;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#login-btn:hover, #send-btn:hover {
-  background-color: #4cae4c;
-}
-
-#messages {
-  height: 300px;
-  overflow-y: scroll;
-  margin-bottom: 10px;
-}
-
-.message {
-  margin: 10px 0;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.message span {
-  font-weight: bold;
-}
-
-.popup {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  display: none;
-}
-
-.popup.error {
-  background-color: #dc3545;
-}
+socket.on('disconnect', () => {
+  showPopup('Vous avez été déconnecté.', true);
+});
