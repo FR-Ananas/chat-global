@@ -42,23 +42,23 @@ body {
   margin-bottom: 10px;
 }
 
-#user-list {
+#users {
   list-style-type: none;
   padding: 0;
 }
 
-#user-list li {
+#users li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-#user-list .user {
+#users .user {
   margin-left: 10px;
   font-size: 16px;
 }
 
-#user-list .status {
+#users .status {
   width: 10px;
   height: 10px;
   border-radius: 50%;
