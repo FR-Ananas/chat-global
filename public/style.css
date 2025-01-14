@@ -1,4 +1,3 @@
-/* Styles globaux */
 * {
   margin: 0;
   padding: 0;
@@ -16,23 +15,30 @@ body {
 
 #app {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 1000px;
 }
 
-/* Menu utilisateur */
-#menu {
-  width: 250px;
-  background-color: #f1f1f1;
+#chat {
+  width: 400px;
+  max-width: 100%;
   padding: 20px;
+  background-color: white;
   border-radius: 8px;
-  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
 }
 
-#menu h2 {
-  margin-bottom: 10px;
+#user-menu {
+  width: 100%;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+#user-menu h2 {
   font-size: 18px;
+  margin-bottom: 10px;
 }
 
 #user-list {
@@ -59,7 +65,6 @@ body {
   margin-right: 5px;
 }
 
-/* Chat */
 #login-popup {
   position: fixed;
   top: 50%;
@@ -94,16 +99,6 @@ body {
   background-color: #4cae4c;
 }
 
-#chat {
-  width: 100%;
-  max-width: 750px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-
 #messages {
   height: 300px;
   overflow-y: scroll;
@@ -121,7 +116,8 @@ body {
 .message span {
   font-weight: bold;
 
-/* Pop-up notification */
+}
+
 .popup {
   position: absolute;
   top: 20px;
@@ -137,4 +133,3 @@ body {
 .popup.error {
   background-color: #dc3545;
 }
-
