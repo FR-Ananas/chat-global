@@ -11,6 +11,7 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #f4f4f9;
+  overflow: hidden; /* Cela empêche le débordement qui pourrait causer des rectangles blancs à l'extérieur de l'écran */
 }
 
 #app {
@@ -22,6 +23,7 @@ body {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* Ajouté pour s'assurer qu'il se place correctement dans l'écran */
 }
 
 #chat {
@@ -73,10 +75,10 @@ body {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Masque le rectangle indésirable */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ombre discrète pour le pop-up */
   z-index: 1000;
-  border: none; /* Assure qu'il n'y ait pas de bordure par défaut */
-  outline: none; /* Retire toute bordure ou ombre qui pourrait apparaître par défaut */
+  border: none;
+  outline: none;
 }
 
 #login input, #message {
@@ -117,6 +119,7 @@ body {
 
 .message span {
   font-weight: bold;
+
 }
 
 .popup {
@@ -134,3 +137,17 @@ body {
 .popup.error {
   background-color: #dc3545;
 }
+
+/* Masquer ou modifier l'apparence du fond */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 999; /* S'assure qu'il est derrière le pop-up */
+  pointer-events: none; /* L'empêche d'interférer avec les clics */
+}
+
