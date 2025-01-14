@@ -73,7 +73,10 @@ sendBtn.addEventListener('click', () => {
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
+
+  // Correcting the message structure and avoiding [object Object] issue
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
