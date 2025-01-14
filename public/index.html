@@ -8,23 +8,11 @@
 </head>
 <body>
   <div id="app">
-    <div id="menu">
-      <div id="user-list">
-        <!-- Affichage du titre Utilisateurs uniquement si un utilisateur est connecté -->
-        <h2 id="user-list-title">Utilisateurs</h2>
+    <div id="chat">
+      <div id="user-menu">
+        <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
         <ul id="users"></ul>
       </div>
-    </div>
-
-    <!-- Formulaire de connexion en pop-up -->
-    <div id="login-popup">
-      <div id="login">
-        <input type="text" id="username" placeholder="Choisis un pseudo" />
-        <button id="login-btn">Se connecter</button>
-      </div>
-    </div>
-    
-    <div id="chat">
       <div id="messages"></div>
       <input type="text" id="message" placeholder="Tape ton message..." disabled />
       <button id="send-btn" disabled>Envoyer</button>
