@@ -30,7 +30,23 @@ body {
   display: none;
 }
 
-#login-popup {
+#user-menu-btn {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  background-color: #f1f1f1;
+  color: black;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+#user-menu-btn:hover {
+  background-color: #ddd;
+}
+
+#user-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -40,93 +56,20 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-}
-
-#login input, #message {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-#login-btn, #send-btn {
-  padding: 10px;
-  width: 100%;
-  border: none;
-  background-color: #5cb85c;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#login-btn:hover, #send-btn:hover {
-  background-color: #4cae4c;
-}
-
-#messages {
-  height: 300px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 70%;
   overflow-y: scroll;
-  margin-bottom: 10px;
 }
 
-.message {
-  margin: 10px 0;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.message span {
-  font-weight: bold;
-}
-
-#toggle-user-menu-btn {
-  padding: 10px;
-  margin-bottom: 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-#toggle-user-menu-btn:hover {
-  background-color: #0056b3;
-}
-
-.user-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1001;
-}
-
-#user-popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 400px;
-}
-
-#user-popup-content h2 {
+#user-popup h2 {
   font-size: 16px;
+  margin-bottom: 10px;
 }
 
 #users {
   list-style-type: none;
   padding: 0;
-  max-height: 200px;
-  overflow-y: scroll;
 }
 
 #users li {
@@ -145,6 +88,40 @@ body {
   height: 10px;
   border-radius: 50%;
   margin-right: 5px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #c82333;
+}
+
+#messages {
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.message span {
+  font-weight: bold;
+
 }
 
 .popup {
