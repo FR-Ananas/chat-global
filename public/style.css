@@ -11,20 +11,7 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #f4f4f9;
-  overflow: hidden; /* Pour ne pas permettre le défilement si un fond est ajouté */
-  position: relative; /* Nous ajoutons la position relative pour placer le fond derrière le pop-up */
-}
-
-/* Ajout d'un fond derrière le pop-up */
-#background-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-  z-index: 999; /* Derrière le pop-up */
-  display: none; /* Masqué par défaut */
+  position: relative;
 }
 
 #app {
@@ -36,7 +23,6 @@ body {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 #chat {
@@ -80,6 +66,16 @@ body {
   margin-right: 5px;
 }
 
+#login-popup-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 999;
+}
+
 #login-popup {
   position: fixed;
   top: 50%;
@@ -88,10 +84,8 @@ body {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ombre discrète pour le pop-up */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  border: none;
-  outline: none;
 }
 
 #login input, #message {
@@ -132,7 +126,6 @@ body {
 
 .message span {
   font-weight: bold;
-
 }
 
 .popup {
