@@ -18,14 +18,13 @@
 
     <div id="chat" style="display: none;">
       <!-- Bouton pour afficher la liste des utilisateurs -->
-      <button id="toggle-user-menu-btn">Utilisateurs en ligne</button>
-      
-      <!-- Pop-up des utilisateurs -->
-      <div id="user-popup" class="user-popup">
-        <div id="user-popup-content">
-          <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
-          <ul id="users"></ul>
-        </div>
+      <button id="user-menu-btn">Voir les utilisateurs</button>
+
+      <!-- Pop-up des utilisateurs en ligne -->
+      <div id="user-popup" style="display: none;">
+        <button id="close-user-popup" class="close-btn">×</button>
+        <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
+        <ul id="users"></ul>
       </div>
 
       <div id="messages"></div>
