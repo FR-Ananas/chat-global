@@ -8,7 +8,15 @@
 </head>
 <body>
   <div id="app">
-    <div id="chat">
+    <!-- Formulaire de connexion en pop-up -->
+    <div id="login-popup">
+      <div id="login">
+        <input type="text" id="username" placeholder="Choisis un pseudo" />
+        <button id="login-btn">Se connecter</button>
+      </div>
+    </div>
+
+    <div id="chat" style="display: none;">
       <!-- Menu Utilisateurs en ligne -->
       <div id="user-menu">
         <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
@@ -18,14 +26,6 @@
       <div id="messages"></div>
       <input type="text" id="message" placeholder="Tape ton message..." disabled />
       <button id="send-btn" disabled>Envoyer</button>
-    </div>
-
-    <!-- Formulaire de connexion en pop-up -->
-    <div id="login-popup">
-      <div id="login">
-        <input type="text" id="username" placeholder="Choisis un pseudo" />
-        <button id="login-btn">Se connecter</button>
-      </div>
     </div>
   </div>
 
