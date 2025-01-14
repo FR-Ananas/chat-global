@@ -1,7 +1,7 @@
 const socket = io();
 
+const loginDiv = document.getElementById('login');
 const loginPopup = document.getElementById('login-popup');
-const loginPopupBackground = document.getElementById('login-popup-background');
 const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('username');
 const messageInput = document.getElementById('message');
@@ -10,21 +10,22 @@ const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
 const userList = document.getElementById('users');
 const userCount = document.getElementById('user-count');
-const popup = document.createElement('div');
-popup.classList.add('popup');
-document.body.appendChild(popup);
+const userPopup = document.getElementById('user-popup');
+const toggleUserMenuBtn = document.getElementById('toggle-user-menu-btn');
 
 let users = {};
 
 function showPopup(message, isError = false) {
+  const popup = document.createElement('div');
+  popup.classList.add('popup');
   popup.textContent = message;
   popup.classList.toggle('error', isError);
-  popup.style.display = 'block';
-  setTimeout(() => popup.style.display = 'none', 3000);
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 3000);
 }
 
 function updateUserList() {
-  userList.innerHTML = '';
+  userList.innerHTML = '';  // Clear existing list
   let onlineUsers = 0;
 
   for (let id in users) {
@@ -32,7 +33,7 @@ function updateUserList() {
     const li = document.createElement('li');
     const status = document.createElement('div');
     status.classList.add('status');
-    status.style.backgroundColor = user.status === 'connected' ? 'green' : 'red';
+    status.style.backgroundColor = user.status === 'connected' ? 'green' : 'orange'; // Green for connected, orange for disconnecting
     const username = document.createElement('span');
     username.classList.add('user');
     username.textContent = user.username;
@@ -46,6 +47,7 @@ function updateUserList() {
     }
   }
 
+  // Update user count
   userCount.textContent = onlineUsers;
 }
 
@@ -54,7 +56,6 @@ loginBtn.addEventListener('click', () => {
   if (username) {
     socket.emit('newUser', username);
     loginPopup.style.display = 'none';
-    loginPopupBackground.style.display = 'none'; // Masquer le fond aussi
     chatDiv.style.display = 'block';
     messageInput.disabled = false;
     sendBtn.disabled = false;
@@ -63,10 +64,15 @@ loginBtn.addEventListener('click', () => {
 
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
+  const username = usernameInput.value.trim();
   if (message) {
-    socket.emit('message', message);
+    socket.emit('message', { username, message });
     messageInput.value = '';
   }
+});
+
+toggleUserMenuBtn.addEventListener('click', () => {
+  userPopup.style.display = userPopup.style.display === 'flex' ? 'none' : 'flex';
 });
 
 socket.on('message', (data) => {
@@ -82,8 +88,8 @@ socket.on('userNotification', (message) => {
 });
 
 socket.on('updateUsers', (usersList) => {
-  users = usersList;
-  updateUserList();
+  users = usersList;  // Update the users object
+  updateUserList();  // Update the user list in the UI
 });
 
 socket.on('disconnect', () => {
