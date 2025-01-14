@@ -9,18 +9,9 @@ const messagesDiv = document.getElementById('messages');
 const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
 const userList = document.getElementById('users');
-const popup = document.createElement('div');
-popup.classList.add('popup');
-document.body.appendChild(popup);
+const userCount = document.getElementById('user-count');
 
 let users = {};
-
-function showPopup(message, isError = false) {
-  popup.textContent = message;
-  popup.classList.toggle('error', isError);
-  popup.style.display = 'block';
-  setTimeout(() => popup.style.display = 'none', 3000);
-}
 
 function updateUserList() {
   userList.innerHTML = '';  // Clear existing list
@@ -39,9 +30,8 @@ function updateUserList() {
     userList.appendChild(li);
   }
 
-  // Update the title with the number of connected users
-  const title = `Utilisateurs en ligne ${Object.keys(users).length}`;
-  document.querySelector('#menu h2').textContent = title;
+  // Update the user count
+  userCount.textContent = Object.keys(users).length;
 }
 
 loginBtn.addEventListener('click', () => {
@@ -67,16 +57,17 @@ sendBtn.addEventListener('click', () => {
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
-
-  // On extrait correctement les propriétés username et message du data reçu
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
-  
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
 
 socket.on('userNotification', (message) => {
-  showPopup(message);
+  const popup = document.createElement('div');
+  popup.classList.add('popup');
+  popup.textContent = message;
+  document.body.appendChild(popup);
+  setTimeout(() => document.body.removeChild(popup), 3000);
 });
 
 socket.on('updateUsers', (usersList) => {
@@ -85,5 +76,9 @@ socket.on('updateUsers', (usersList) => {
 });
 
 socket.on('disconnect', () => {
-  showPopup('Vous avez été déconnecté.', true);
+  const popup = document.createElement('div');
+  popup.classList.add('popup', 'error');
+  popup.textContent = 'Vous avez été déconnecté.';
+  document.body.appendChild(popup);
+  setTimeout(() => document.body.removeChild(popup), 3000);
 });
