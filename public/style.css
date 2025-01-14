@@ -15,29 +15,29 @@ body {
 
 #app {
   display: flex;
-}
-
-#chat {
-  width: 400px;
-  max-width: 100%;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
   padding: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: none;
-  flex-direction: column;
+}
+
+#chat {
+  width: 100%;
 }
 
 #user-menu {
-  width: 100%;
   background-color: #f1f1f1;
   padding: 10px;
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 #user-menu h2 {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 10px;
 }
 
