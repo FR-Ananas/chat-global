@@ -19,7 +19,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     const username = users[socket.id]?.username || 'Anonyme';
-    io.emit('message', { username, message: message.message });
+    io.emit('message', { username, message });
   });
 
   socket.on('disconnect', () => {
@@ -29,6 +29,7 @@ io.on('connection', (socket) => {
       io.emit('userNotification', `${user.username} a quitté le chat.`);
       io.emit('updateUsers', users);
 
+      // Supprimer l'utilisateur après un délai (pour afficher le point rouge temporairement)
       setTimeout(() => {
         delete users[socket.id];
         io.emit('updateUsers', users);
