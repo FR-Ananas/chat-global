@@ -19,7 +19,14 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     const username = users[socket.id]?.username || 'Anonyme';
-    io.emit('message', { username, message });
+
+    // Vérification du type de message avant envoi
+    if (typeof message === 'string') {
+      io.emit('message', { username, message });
+    } else {
+      console.error("Le message n'est pas une chaîne:", message);
+      io.emit('message', { username, message: "(Erreur de message)" });
+    }
   });
 
   socket.on('disconnect', () => {
