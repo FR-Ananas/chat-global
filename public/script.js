@@ -1,7 +1,7 @@
 const socket = io();
 
-const loginDiv = document.getElementById('login');
 const loginPopup = document.getElementById('login-popup');
+const loginPopupBackground = document.getElementById('login-popup-background');
 const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('username');
 const messageInput = document.getElementById('message');
@@ -10,7 +10,9 @@ const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
 const userList = document.getElementById('users');
 const userCount = document.getElementById('user-count');
-const backgroundOverlay = document.getElementById('background-overlay'); // Sélection du fond semi-transparent
+const popup = document.createElement('div');
+popup.classList.add('popup');
+document.body.appendChild(popup);
 
 let users = {};
 
@@ -22,7 +24,7 @@ function showPopup(message, isError = false) {
 }
 
 function updateUserList() {
-  userList.innerHTML = '';  // Clear existing list
+  userList.innerHTML = '';
   let onlineUsers = 0;
 
   for (let id in users) {
@@ -44,7 +46,6 @@ function updateUserList() {
     }
   }
 
-  // Update user count
   userCount.textContent = onlineUsers;
 }
 
@@ -53,18 +54,17 @@ loginBtn.addEventListener('click', () => {
   if (username) {
     socket.emit('newUser', username);
     loginPopup.style.display = 'none';
+    loginPopupBackground.style.display = 'none'; // Masquer le fond aussi
     chatDiv.style.display = 'block';
     messageInput.disabled = false;
     sendBtn.disabled = false;
-    backgroundOverlay.style.display = 'none'; // Masquer le fond lorsque le pop-up disparaît
   }
 });
 
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
-  const username = usernameInput.value.trim();
   if (message) {
-    socket.emit('message', { username, message });
+    socket.emit('message', message);
     messageInput.value = '';
   }
 });
@@ -86,8 +86,6 @@ socket.on('updateUsers', (usersList) => {
   updateUserList();
 });
 
-// Show the background overlay when the login popup is visible
-function showLoginPopup() {
-  loginPopup.style.display = 'block';
-  backgroundOverlay.style.display = 'block'; // Afficher le fond lorsque le pop-up est visible
-}
+socket.on('disconnect', () => {
+  showPopup('Vous avez été déconnecté.', true);
+});
