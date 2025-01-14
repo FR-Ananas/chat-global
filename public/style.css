@@ -11,7 +11,20 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #f4f4f9;
-  overflow: hidden; /* Cela empêche le débordement qui pourrait causer des rectangles blancs à l'extérieur de l'écran */
+  overflow: hidden; /* Pour ne pas permettre le défilement si un fond est ajouté */
+  position: relative; /* Nous ajoutons la position relative pour placer le fond derrière le pop-up */
+}
+
+/* Ajout d'un fond derrière le pop-up */
+#background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 999; /* Derrière le pop-up */
+  display: none; /* Masqué par défaut */
 }
 
 #app {
@@ -23,7 +36,7 @@ body {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative; /* Ajouté pour s'assurer qu'il se place correctement dans l'écran */
+  position: relative;
 }
 
 #chat {
@@ -137,17 +150,3 @@ body {
 .popup.error {
   background-color: #dc3545;
 }
-
-/* Masquer ou modifier l'apparence du fond */
-body::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  z-index: 999; /* S'assure qu'il est derrière le pop-up */
-  pointer-events: none; /* L'empêche d'interférer avec les clics */
-}
-
