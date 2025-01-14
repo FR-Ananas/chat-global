@@ -1,15 +1,16 @@
 {
-  "name": "chat-global",
+  "name": "chat-app",
   "version": "1.0.0",
-  "description": "Un chat global avec Socket.IO",
+  "description": "Chat en ligne",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.5.4"
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
   },
+  "devDependencies": {},
   "author": "",
   "license": "ISC"
 }
