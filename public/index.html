@@ -9,7 +9,6 @@
 <body>
   <div id="app">
     <!-- Formulaire de connexion en pop-up -->
-    <div id="login-popup-background"></div>
     <div id="login-popup">
       <div id="login">
         <input type="text" id="username" placeholder="Choisis un pseudo" />
@@ -18,10 +17,15 @@
     </div>
 
     <div id="chat" style="display: none;">
-      <!-- Menu Utilisateurs en ligne -->
-      <div id="user-menu">
-        <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
-        <ul id="users"></ul>
+      <!-- Bouton pour afficher la liste des utilisateurs -->
+      <button id="toggle-user-menu-btn">Utilisateurs en ligne</button>
+      
+      <!-- Pop-up des utilisateurs -->
+      <div id="user-popup" class="user-popup">
+        <div id="user-popup-content">
+          <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
+          <ul id="users"></ul>
+        </div>
       </div>
 
       <div id="messages"></div>
