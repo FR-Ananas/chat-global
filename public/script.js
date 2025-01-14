@@ -10,18 +10,20 @@ const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
 const userList = document.getElementById('users');
 const userCount = document.getElementById('user-count');
+const userMenuBtn = document.getElementById('user-menu-btn');
 const userPopup = document.getElementById('user-popup');
-const toggleUserMenuBtn = document.getElementById('toggle-user-menu-btn');
+const closeUserPopupBtn = document.getElementById('close-user-popup');
+const popup = document.createElement('div');
+popup.classList.add('popup');
+document.body.appendChild(popup);
 
 let users = {};
 
 function showPopup(message, isError = false) {
-  const popup = document.createElement('div');
-  popup.classList.add('popup');
   popup.textContent = message;
   popup.classList.toggle('error', isError);
-  document.body.appendChild(popup);
-  setTimeout(() => popup.remove(), 3000);
+  popup.style.display = 'block';
+  setTimeout(() => popup.style.display = 'none', 3000);
 }
 
 function updateUserList() {
@@ -33,7 +35,7 @@ function updateUserList() {
     const li = document.createElement('li');
     const status = document.createElement('div');
     status.classList.add('status');
-    status.style.backgroundColor = user.status === 'connected' ? 'green' : 'orange'; // Green for connected, orange for disconnecting
+    status.style.backgroundColor = user.status === 'connected' ? 'green' : 'orange';
     const username = document.createElement('span');
     username.classList.add('user');
     username.textContent = user.username;
@@ -71,14 +73,18 @@ sendBtn.addEventListener('click', () => {
   }
 });
 
-toggleUserMenuBtn.addEventListener('click', () => {
-  userPopup.style.display = userPopup.style.display === 'flex' ? 'none' : 'flex';
-});
-
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
-  messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+
+  // Vérification du message avant l'affichage
+  if (typeof data.message === 'string') {
+    messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
+  } else {
+    console.error("Message is not a string:", data.message);
+    messageDiv.innerHTML = `<span>${data.username} :</span> (Erreur de message)`;
+  }
+
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
@@ -94,4 +100,14 @@ socket.on('updateUsers', (usersList) => {
 
 socket.on('disconnect', () => {
   showPopup('Vous avez été déconnecté.', true);
+});
+
+// Show the user list popup
+userMenuBtn.addEventListener('click', () => {
+  userPopup.style.display = 'block';
+});
+
+// Close the user list popup
+closeUserPopupBtn.addEventListener('click', () => {
+  userPopup.style.display = 'none';
 });
