@@ -6,37 +6,35 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.static('public'));
+app.use(express.static('public'));  // Sert les fichiers statiques
 
 const users = {};
 
 io.on('connection', (socket) => {
-  // Quand un nouvel utilisateur rejoint
+  // Ajout d'un nouvel utilisateur
   socket.on('newUser', (username) => {
     users[socket.id] = { username, status: 'connected' };
     socket.broadcast.emit('userNotification', `${username} a rejoint le chat.`);
-    io.emit('updateUsers', users);
+    io.emit('updateUsers', Object.values(users));  // Simplification: on envoie directement la liste des utilisateurs
   });
 
-  // Quand un utilisateur envoie un message
-  socket.on('message', (data) => {
+  // Réception d'un message
+  socket.on('message', ({ message }) => {
     const username = users[socket.id]?.username || 'Anonyme';
-    const userMessage = data?.message; // Récupère le message envoyé par le client
-
-    if (typeof userMessage === 'string' && userMessage.trim().length > 0) {
-      io.emit('message', { username, message: userMessage }); // Message valide
+    if (message?.trim()) {
+      io.emit('message', { username, message });  // Envoi du message
     } else {
-      socket.emit('message', { username: 'Serveur', message: 'Message invalide.' }); // Message invalide
+      socket.emit('message', { username: 'Serveur', message: 'Message invalide.' });  // Message invalide
     }
   });
 
-  // Quand un utilisateur se déconnecte
+  // Gestion de la déconnexion
   socket.on('disconnect', () => {
     const user = users[socket.id];
     if (user) {
+      delete users[socket.id];  // Suppression de l'utilisateur
       io.emit('userNotification', `${user.username} a quitté le chat.`);
-      delete users[socket.id];
-      io.emit('updateUsers', users);
+      io.emit('updateUsers', Object.values(users));  // Mise à jour de la liste des utilisateurs
     }
   });
 });
