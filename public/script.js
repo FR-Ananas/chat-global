@@ -1,5 +1,6 @@
 const socket = io();
 
+const loginDiv = document.getElementById('login');
 const loginPopup = document.getElementById('login-popup');
 const chatDiv = document.getElementById('chat');
 const usernameInput = document.getElementById('username');
@@ -7,15 +8,15 @@ const messageInput = document.getElementById('message');
 const messagesDiv = document.getElementById('messages');
 const loginBtn = document.getElementById('login-btn');
 const sendBtn = document.getElementById('send-btn');
+const userList = document.getElementById('users');
+const userCount = document.getElementById('user-count');
 const userMenuBtn = document.getElementById('user-menu-btn');
 const userPopup = document.getElementById('user-popup');
 const closeUserPopupBtn = document.getElementById('close-user-popup');
-const roomInput = document.getElementById('room');
-const joinRoomBtn = document.getElementById('join-room-btn');
-const userList = document.getElementById('users');
-const userCount = document.getElementById('user-count');
+const createRoomBtn = document.getElementById('create-room-btn');
 
 let users = {};
+let currentRoom = null;
 
 function showPopup(message, isError = false) {
   const popup = document.createElement('div');
@@ -48,19 +49,23 @@ loginBtn.addEventListener('click', () => {
   }
 });
 
-joinRoomBtn.addEventListener('click', () => {
-  const room = roomInput.value.trim();
-  if (room) {
-    socket.emit('joinRoom', room);
-    roomInput.value = '';
-  }
-});
-
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
   if (message) {
-    socket.emit('message', { message });
+    if (currentRoom) {
+      socket.emit('message', { message, room: currentRoom });
+    } else {
+      socket.emit('message', { message });
+    }
     messageInput.value = '';
+  }
+});
+
+createRoomBtn.addEventListener('click', () => {
+  const roomName = prompt("Entrez le nom du salon :");
+  if (roomName) {
+    socket.emit('joinRoom', roomName);
+    currentRoom = roomName;
   }
 });
 
@@ -76,4 +81,15 @@ socket.on('userNotification', showPopup);
 socket.on('updateUsers', (usersList) => {
   users = usersList;
   updateUserList();
+});
+
+socket.on('disconnect', () => {
+  showPopup('Vous avez été déconnecté.', true);
+});
+
+userMenuBtn.addEventListener('click', () => {
+  userPopup.style.display = 'block';
+});
+closeUserPopupBtn.addEventListener('click', () => {
+  userPopup.style.display = 'none';
 });
