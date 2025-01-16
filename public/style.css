@@ -5,44 +5,51 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif; /* Typographie plus moderne */
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f9;
+  background-color: #f7f8fa;
   position: relative;
+  overflow: hidden; /* Évite les débordements */
 }
 
 #app {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 700px; /* Plus grand pour un chat plus spacieux */
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out; /* Animation de l'application */
 }
 
 #chat {
+  width: 100%;
   display: none;
+  animation: fadeIn 0.5s ease-in-out; /* Animation pour l'apparition du chat */
 }
 
-#user-menu-btn, .close-btn {
-  padding: 10px;
+#user-menu-btn {
+  padding: 15px;
   width: 100%;
   border: none;
-  background-color: #f1f1f1;
-  color: black;
-  border-radius: 4px;
+  background-color: #4CAF50; /* Couleur plus attractive */
+  color: white;
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 10px;
-  font-size: 16px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
-#user-menu-btn:hover, .close-btn:hover {
-  background-color: #ddd;
+#user-menu-btn:hover {
+  background-color: #45a049;
 }
 
 #user-popup {
@@ -51,27 +58,68 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  width: 90%;
-  max-width: 500px;
+  width: 80%;
+  max-width: 550px;
   max-height: 70%;
   overflow-y: auto;
+  animation: slideIn 0.5s ease-out;
+}
+
+#user-popup h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#users {
+  list-style-type: none;
+  padding: 0;
 }
 
 #users li {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
 }
 
 #users .status {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  margin-right: 5px;
+  margin-right: 10px;
+}
+
+#messages {
+  height: 350px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+  margin: 10px 0;
+  padding: 12px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.message span {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.message:hover {
+  transform: scale(1.05); /* Effet de survol */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .popup {
@@ -81,29 +129,67 @@ body {
   transform: translateX(-50%);
   background-color: #28a745;
   color: white;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 8px;
   display: none;
+  animation: slideIn 0.5s ease-out;
 }
 
 .popup.error {
   background-color: #dc3545;
 }
 
-#messages {
-  height: 300px;
-  overflow-y: auto;
-  margin-bottom: 10px;
+#message {
+  padding: 12px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
 }
 
-.message {
-  margin: 10px 0;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  font-size: 14px;
+#message:focus {
+  border-color: #4CAF50; /* Effet de focus */
 }
 
-.message span {
-  font-weight: bold;
+#send-btn {
+  padding: 12px 20px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#send-btn:hover {
+  background-color: #45a049;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #c82333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideIn {
+  0% { transform: translate(-50%, -60%); }
+  100% { transform: translate(-50%, -50%); }
 }
