@@ -13,46 +13,100 @@ const userCount = document.getElementById('user-count');
 const userMenuBtn = document.getElementById('user-menu-btn');
 const userPopup = document.getElementById('user-popup');
 const closeUserPopupBtn = document.getElementById('close-user-popup');
+const settingsBtn = document.getElementById('settings-btn');
+const settingsPopup = document.getElementById('settings-popup');
+const closeSettingsBtn = document.getElementById('close-settings');
+const changeUsernameBtn = document.getElementById('change-username-btn');
+const changeUsernamePopup = document.getElementById('change-username-popup');
+const saveUsernameBtn = document.getElementById('save-username-btn');
+const newUsernameInput = document.getElementById('new-username');
+const changeThemeBtn = document.getElementById('change-theme-btn');
+const colorPopup = document.getElementById('color-popup');
+const closeColorPopupBtn = document.getElementById('close-color-popup');
+const fontPopup = document.getElementById('font-popup');
+const closeFontPopupBtn = document.getElementById('close-font-popup');
+const fontSizePopup = document.getElementById('font-size-popup');
+const closeFontSizePopupBtn = document.getElementById('close-font-size-popup');
+const fontBtns = document.querySelectorAll('.font-btn');
+const fontSizeBtns = document.querySelectorAll('.font-size-btn');
+const colors = document.querySelectorAll('.color');
 
-let users = {};
+let currentColor = '#000000';
+let currentFont = 'Arial';
+let currentFontSize = 'medium';
 
-function showPopup(message, isError = false) {
-  const popup = document.createElement('div');
-  popup.classList.add('popup', isError ? 'error' : '');
-  popup.textContent = message;
-  document.body.appendChild(popup);
-  setTimeout(() => popup.remove(), 3000);
+function showPopup(popup) {
+  popup.style.display = 'block';
 }
 
-function updateUserList() {
-  userList.innerHTML = '';
-  const onlineUsers = Object.values(users).filter(user => user.status === 'connected').length;
-  userCount.textContent = onlineUsers;
-
-  Object.values(users).forEach(user => {
-    const li = document.createElement('li');
-    li.innerHTML = `<div class="status" style="background-color: ${user.status === 'connected' ? 'green' : 'orange'};"></div><span class="user">${user.username}</span>`;
-    userList.appendChild(li);
-  });
+function closePopup(popup) {
+  popup.style.display = 'none';
 }
 
-loginBtn.addEventListener('click', () => {
-  const username = usernameInput.value.trim();
-  if (username) {
-    socket.emit('newUser', username);
-    loginPopup.style.display = 'none';
-    chatDiv.style.display = 'block';
-    messageInput.disabled = false;
-    sendBtn.disabled = false;
+// Ouvrir le pop-up de paramètres
+settingsBtn.addEventListener('click', () => {
+  showPopup(settingsPopup);
+});
+
+// Fermer le pop-up de paramètres
+closeSettingsBtn.addEventListener('click', () => {
+  closePopup(settingsPopup);
+});
+
+// Ouvrir le pop-up pour changer le pseudo
+changeUsernameBtn.addEventListener('click', () => {
+  showPopup(changeUsernamePopup);
+});
+
+// Fermer le pop-up pour changer le pseudo
+closeUsernamePopupBtn.addEventListener('click', () => {
+  closePopup(changeUsernamePopup);
+});
+
+// Sauvegarder le nouveau pseudo
+saveUsernameBtn.addEventListener('click', () => {
+  const newUsername = newUsernameInput.value.trim();
+  if (newUsername) {
+    socket.emit('newUser', newUsername);
+    closePopup(changeUsernamePopup);
   }
 });
 
-sendBtn.addEventListener('click', () => {
-  const message = messageInput.value.trim();
-  if (message) {
-    socket.emit('message', { message });
-    messageInput.value = '';
-  }
+// Ouvrir le pop-up de couleur
+changeThemeBtn.addEventListener('click', () => {
+  showPopup(colorPopup);
+});
+
+// Fermer le pop-up de couleur
+closeColorPopupBtn.addEventListener('click', () => {
+  closePopup(colorPopup);
+});
+
+// Choisir une couleur
+colors.forEach(colorDiv => {
+  colorDiv.addEventListener('click', () => {
+    currentColor = colorDiv.style.backgroundColor;
+    document.body.style.color = currentColor;
+    closePopup(colorPopup);
+  });
+});
+
+// Ouvrir le pop-up de la police
+fontBtns.forEach(fontBtn => {
+  fontBtn.addEventListener('click', (e) => {
+    currentFont = e.target.dataset.font;
+    document.body.style.fontFamily = currentFont;
+    closePopup(fontPopup);
+  });
+});
+
+// Ouvrir le pop-up de la taille de police
+fontSizeBtns.forEach(fontSizeBtn => {
+  fontSizeBtn.addEventListener('click', (e) => {
+    currentFontSize = e.target.dataset.size;
+    document.body.style.fontSize = currentFontSize === 'small' ? '12px' : currentFontSize === 'medium' ? '16px' : '20px';
+    closePopup(fontSizePopup);
+  });
 });
 
 socket.on('message', (data) => {
@@ -61,22 +115,4 @@ socket.on('message', (data) => {
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
   messagesDiv.appendChild(messageDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
-});
-
-socket.on('userNotification', showPopup);
-socket.on('updateUsers', (usersList) => {
-  users = usersList;
-  updateUserList();
-});
-
-socket.on('disconnect', () => {
-  showPopup('Vous avez été déconnecté.', true);
-});
-
-// Afficher/fermer la liste des utilisateurs
-userMenuBtn.addEventListener('click', () => {
-  userPopup.style.display = 'block';
-});
-closeUserPopupBtn.addEventListener('click', () => {
-  userPopup.style.display = 'none';
 });
