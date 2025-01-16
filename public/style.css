@@ -27,6 +27,61 @@ body {
   transition: transform 0.3s ease-in-out; /* Animation de l'application */
 }
 
+#login-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond légèrement opaque */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: opacity 0.3s ease-in-out; /* Transition d'apparition du pop-up */
+}
+
+#login {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: slideIn 0.5s ease-out;
+}
+
+#username {
+  padding: 12px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 18px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+}
+
+#username:focus {
+  border-color: #4CAF50; /* Couleur de focus pour le champ texte */
+}
+
+#login-btn {
+  padding: 15px 30px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#login-btn:hover {
+  background-color: #45a049;
+}
+
+/* Chat Interface */
 #chat {
   width: 100%;
   display: none;
@@ -72,6 +127,7 @@ body {
 #user-popup h2 {
   font-size: 18px;
   margin-bottom: 20px;
+  color: #333;
 }
 
 #users {
