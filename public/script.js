@@ -20,7 +20,7 @@ const changeUsernameBtn = document.getElementById('change-username-btn');
 const changeUsernamePopup = document.getElementById('change-username-popup');
 const saveUsernameBtn = document.getElementById('save-username-btn');
 const newUsernameInput = document.getElementById('new-username');
-const closeUsernamePopupBtn = document.getElementById('close-username-popup'); // Correction ici
+const closeUsernamePopupBtn = document.getElementById('close-username-popup');
 const changeThemeBtn = document.getElementById('change-theme-btn');
 const colorPopup = document.getElementById('color-popup');
 const closeColorPopupBtn = document.getElementById('close-color-popup');
@@ -36,10 +36,12 @@ let currentColor = '#000000';
 let currentFont = 'Arial';
 let currentFontSize = 'medium';
 
+// Fonction pour afficher un pop-up
 function showPopup(popup) {
   popup.style.display = 'block';
 }
 
+// Fonction pour fermer un pop-up
 function closePopup(popup) {
   popup.style.display = 'none';
 }
@@ -67,9 +69,12 @@ closeUsernamePopupBtn.addEventListener('click', () => {
 // Sauvegarder le nouveau pseudo
 saveUsernameBtn.addEventListener('click', () => {
   const newUsername = newUsernameInput.value.trim();
-  if (newUsername) {
+  if (newUsername && newUsername.length <= 15) { // Limiter à 15 caractères
+    // Émettre le pseudo au serveur
     socket.emit('newUser', newUsername);
     closePopup(changeUsernamePopup);
+  } else {
+    alert('Le pseudo doit être compris entre 1 et 15 caractères.');
   }
 });
 
@@ -110,10 +115,44 @@ fontSizeBtns.forEach(fontSizeBtn => {
   });
 });
 
+// Connexion de l'utilisateur (cacher le formulaire de login et afficher le chat)
+loginBtn.addEventListener('click', () => {
+  const username = usernameInput.value.trim();
+  if (username && username.length <= 15) {
+    socket.emit('newUser', username);
+    loginPopup.style.display = 'none';
+    chatDiv.style.display = 'block';
+    usernameInput.value = ''; // Réinitialiser le champ de pseudo
+  } else {
+    alert('Le pseudo doit être compris entre 1 et 15 caractères.');
+  }
+});
+
+// Affichage des messages du serveur
 socket.on('message', (data) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
   messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
   messagesDiv.appendChild(messageDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
+
+// Mettre à jour la liste des utilisateurs
+socket.on('updateUsers', (users) => {
+  userList.innerHTML = '';
+  Object.values(users).forEach(user => {
+    const userItem = document.createElement('li');
+    userItem.textContent = user.username;
+    userList.appendChild(userItem);
+  });
+  userCount.textContent = Object.keys(users).length;
+});
+
+// Afficher les notifications de l'utilisateur
+socket.on('userNotification', (message) => {
+  const notification = document.createElement('div');
+  notification.classList.add('message');
+  notification.textContent = message;
+  messagesDiv.appendChild(notification);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
