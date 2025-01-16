@@ -1,95 +1,64 @@
 const socket = io();
 
-const loginDiv = document.getElementById('login');
-const loginPopup = document.getElementById('login-popup');
-const chatDiv = document.getElementById('chat');
-const usernameInput = document.getElementById('username');
-const messageInput = document.getElementById('message');
-const messagesDiv = document.getElementById('messages');
-const loginBtn = document.getElementById('login-btn');
-const sendBtn = document.getElementById('send-btn');
-const userList = document.getElementById('users');
-const userCount = document.getElementById('user-count');
+let username = '';
+
+// Gérer l'affichage des utilisateurs
 const userMenuBtn = document.getElementById('user-menu-btn');
 const userPopup = document.getElementById('user-popup');
 const closeUserPopupBtn = document.getElementById('close-user-popup');
-const createRoomBtn = document.getElementById('create-room-btn');
+const usersList = document.getElementById('users');
+const userCount = document.getElementById('user-count');
 
-let users = {};
-let currentRoom = null;
+// Lorsqu'un utilisateur clique sur "Voir les utilisateurs"
+userMenuBtn.addEventListener('click', () => {
+  userPopup.style.display = 'block';
+});
 
-function showPopup(message, isError = false) {
-  const popup = document.createElement('div');
-  popup.classList.add('popup', isError ? 'error' : '');
-  popup.textContent = message;
-  document.body.appendChild(popup);
-  setTimeout(() => popup.remove(), 3000);
-}
+// Fermer la fenêtre pop-up des utilisateurs
+closeUserPopupBtn.addEventListener('click', () => {
+  userPopup.style.display = 'none';
+});
 
-function updateUserList() {
-  userList.innerHTML = '';
-  const onlineUsers = Object.values(users).filter(user => user.status === 'connected').length;
-  userCount.textContent = onlineUsers;
-
-  Object.values(users).forEach(user => {
-    const li = document.createElement('li');
-    li.innerHTML = `<div class="status" style="background-color: ${user.status === 'connected' ? 'green' : 'orange'};"></div><span class="user">${user.username}</span>`;
-    userList.appendChild(li);
-  });
-}
+// Gérer la connexion d'un utilisateur
+const loginBtn = document.getElementById('login-btn');
+const usernameInput = document.getElementById('username');
+const chatDiv = document.getElementById('chat');
+const loginPopup = document.getElementById('login-popup');
 
 loginBtn.addEventListener('click', () => {
-  const username = usernameInput.value.trim();
+  username = usernameInput.value.trim();
   if (username) {
     socket.emit('newUser', username);
     loginPopup.style.display = 'none';
     chatDiv.style.display = 'block';
-    messageInput.disabled = false;
-    sendBtn.disabled = false;
   }
 });
 
+// Mettre à jour la liste des utilisateurs
+socket.on('updateUsers', (users) => {
+  usersList.innerHTML = '';
+  users.forEach((user) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="status" style="background-color: ${user.status === 'connected' ? '#28a745' : '#dc3545'};"></span>${user.username}`;
+    usersList.appendChild(li);
+  });
+  userCount.textContent = users.length;
+});
+
+// Gérer l'envoi des messages
+const messageInput = document.getElementById('message');
+const sendBtn = document.getElementById('send-btn');
 sendBtn.addEventListener('click', () => {
   const message = messageInput.value.trim();
   if (message) {
-    if (currentRoom) {
-      socket.emit('message', { message, room: currentRoom });
-    } else {
-      socket.emit('message', { message });
-    }
+    socket.emit('message', { message });
     messageInput.value = '';
   }
 });
 
-createRoomBtn.addEventListener('click', () => {
-  const roomName = prompt("Entrez le nom du salon :");
-  if (roomName) {
-    socket.emit('joinRoom', roomName);
-    currentRoom = roomName;
-  }
-});
-
-socket.on('message', (data) => {
+socket.on('message', ({ username, message }) => {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message');
-  messageDiv.innerHTML = `<span>${data.username} :</span> ${data.message}`;
-  messagesDiv.appendChild(messageDiv);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-});
-
-socket.on('userNotification', showPopup);
-socket.on('updateUsers', (usersList) => {
-  users = usersList;
-  updateUserList();
-});
-
-socket.on('disconnect', () => {
-  showPopup('Vous avez été déconnecté.', true);
-});
-
-userMenuBtn.addEventListener('click', () => {
-  userPopup.style.display = 'block';
-});
-closeUserPopupBtn.addEventListener('click', () => {
-  userPopup.style.display = 'none';
+  messageDiv.innerHTML = `<span>${username}:</span> ${message}`;
+  document.getElementById('messages').appendChild(messageDiv);
 });
