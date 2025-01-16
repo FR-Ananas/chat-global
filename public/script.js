@@ -20,6 +20,7 @@ const changeUsernameBtn = document.getElementById('change-username-btn');
 const changeUsernamePopup = document.getElementById('change-username-popup');
 const saveUsernameBtn = document.getElementById('save-username-btn');
 const newUsernameInput = document.getElementById('new-username');
+const closeUsernamePopupBtn = document.getElementById('close-username-popup'); // Correction ici
 const changeThemeBtn = document.getElementById('change-theme-btn');
 const colorPopup = document.getElementById('color-popup');
 const closeColorPopupBtn = document.getElementById('close-color-popup');
