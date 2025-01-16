@@ -3,91 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat Global</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Chat App</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="/socket.io/socket.io.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
   <div id="app">
-    <!-- Formulaire de connexion en pop-up -->
-    <div id="login-popup">
-      <div id="login">
-        <input type="text" id="username" placeholder="Choisis un pseudo" maxlength="15" />
-        <button id="login-btn">Se connecter</button>
+    <div id="login">
+      <div id="login-popup">
+        <h2>Bienvenue</h2>
+        <p>Choisissez un pseudo :</p>
+        <input type="text" id="username" placeholder="Votre pseudo (max 15 caractères)">
+        <button id="login-btn">Entrer</button>
       </div>
     </div>
 
-    <div id="chat" style="display: none;">
-      <!-- Bouton pour afficher la liste des utilisateurs -->
-      <button id="user-menu-btn">Voir les utilisateurs</button>
-      <button id="settings-btn"><i class="fa fa-cogs"></i> Paramètres</button>
-
-      <!-- Pop-up des utilisateurs en ligne -->
-      <div id="user-popup" style="display: none;">
-        <button id="close-user-popup" class="close-btn">×</button>
-        <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
-        <ul id="users"></ul>
-      </div>
-
-      <!-- Pop-up des paramètres -->
-      <div id="settings-popup" style="display: none;">
-        <button id="close-settings" class="close-btn">×</button>
-        <h2>Paramètres</h2>
-        <button id="change-username-btn">Changer le pseudo</button>
-        <button id="change-theme-btn">Changer le thème</button>
-        <button id="change-font-btn">Changer la police</button>
-        <button id="change-font-size-btn">Changer la taille de police</button>
-      </div>
-
-      <!-- Pop-up de changement de pseudo -->
-      <div id="change-username-popup" style="display: none;">
-        <button id="close-username-popup" class="close-btn">×</button>
-        <input type="text" id="new-username" placeholder="Nouveau pseudo" />
-        <button id="save-username-btn">Sauvegarder</button>
-      </div>
-
-      <!-- Pop-up de choix de couleurs -->
-      <div id="color-popup" style="display: none;">
-        <button id="close-color-popup" class="close-btn">×</button>
-        <h2>Choisir la couleur du texte</h2>
-        <div id="colors">
-          <div class="color" style="background-color: #FFFFFF;"></div>
-          <div class="color" style="background-color: #000000;"></div>
-          <div class="color" style="background-color: #FF0000;"></div>
-          <div class="color" style="background-color: #00FF00;"></div>
-          <div class="color" style="background-color: #FFFF00;"></div>
-          <div class="color" style="background-color: #0000FF;"></div>
-          <div class="color" style="background-color: #FF00FF;"></div>
-          <div class="color" style="background-color: #808080;"></div>
-          <div class="color" style="background-color: #800000;"></div>
-        </div>
-      </div>
-
-      <!-- Pop-up de choix de police -->
-      <div id="font-popup" style="display: none;">
-        <button id="close-font-popup" class="close-btn">×</button>
-        <h2>Choisir la police</h2>
-        <button class="font-btn" data-font="Arial">Arial</button>
-        <button class="font-btn" data-font="Helvetica">Helvetica</button>
-        <button class="font-btn" data-font="sans-serif">Sans-serif</button>
-        <button class="font-btn" data-font="Courier">Courier</button>
-      </div>
-
-      <!-- Pop-up de choix de taille de police -->
-      <div id="font-size-popup" style="display: none;">
-        <button id="close-font-size-popup" class="close-btn">×</button>
-        <h2>Choisir la taille de la police</h2>
-        <button class="font-size-btn" data-size="small">Petit</button>
-        <button class="font-size-btn" data-size="medium">Moyen</button>
-        <button class="font-size-btn" data-size="large">Grand</button>
-      </div>
+    <div id="chat">
+      <button id="user-menu-btn">Liste des utilisateurs</button>
+      <button id="settings-btn">Paramètres</button>
 
       <div id="messages"></div>
-      <input type="text" id="message" placeholder="Tape ton message..." disabled />
-      <button id="send-btn" disabled>Envoyer</button>
+
+      <input type="text" id="message" placeholder="Votre message">
+      <button id="send-btn">Envoyer</button>
     </div>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
+  <div id="user-popup" class="popup">
+    <button class="close-btn" id="close-user-popup">&times;</button>
+    <h3>Utilisateurs connectés (<span id="user-count">0</span>)</h3>
+    <ul id="users"></ul>
+  </div>
+
+  <div id="settings-popup" class="popup">
+    <button class="close-btn" id="close-settings">&times;</button>
+    <h3>Paramètres</h3>
+    <button id="change-username-btn">Changer de pseudo</button>
+    <button id="change-theme-btn">Changer le thème</button>
+  </div>
+
+  <div id="change-username-popup" class="popup">
+    <button class="close-btn" id="close-username-popup">&times;</button>
+    <h3>Nouveau pseudo</h3>
+    <input type="text" id="new-username" placeholder="Votre nouveau pseudo (max 15 caractères)">
+    <button id="save-username-btn">Sauvegarder</button>
+  </div>
+
+  <div id="color-popup" class="popup">
+    <button class="close-btn" id="close-color-popup">&times;</button>
+    <h3>Choisissez une couleur</h3>
+    <div id="colors">
+      <div class="color" style="background-color: #000000;"></div>
+      <div class="color" style="background-color: #007bff;"></div>
+      <div class="color" style="background-color: #28a745;"></div>
+      <div class="color" style="background-color: #dc3545;"></div>
+      <div class="color" style="background-color: #ffc107;"></div>
+    </div>
+  </div>
 </body>
 </html>
