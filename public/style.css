@@ -5,69 +5,71 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif; /* Typographie plus moderne */
+  font-family: 'Roboto', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #f7f8fa;
   position: relative;
-  overflow: hidden; /* Évite les débordements */
+  overflow: hidden;
 }
 
 #app {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 700px; /* Plus grand pour un chat plus spacieux */
+  max-width: 700px;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out; /* Animation de l'application */
+  transition: transform 0.3s ease-in-out;
+}
+
+#chat {
+  width: 100%;
+  display: none;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 #login-popup {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond légèrement opaque */
-  position: fixed;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  transition: opacity 0.3s ease-in-out; /* Transition d'apparition du pop-up */
+  animation: slideIn 0.5s ease-out;
 }
 
 #login {
   background-color: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: slideIn 0.5s ease-out;
 }
 
 #username {
-  padding: 12px;
+  padding: 15px;
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 18px;
   margin-bottom: 20px;
-  transition: border-color 0.3s ease;
-}
-
-#username:focus {
-  border-color: #4CAF50; /* Couleur de focus pour le champ texte */
+  font-size: 16px;
 }
 
 #login-btn {
-  padding: 15px 30px;
+  padding: 12px 20px;
   background-color: #4CAF50;
   border: none;
   border-radius: 8px;
@@ -81,18 +83,11 @@ body {
   background-color: #45a049;
 }
 
-/* Chat Interface */
-#chat {
-  width: 100%;
-  display: none;
-  animation: fadeIn 0.5s ease-in-out; /* Animation pour l'apparition du chat */
-}
-
 #user-menu-btn {
   padding: 15px;
   width: 100%;
   border: none;
-  background-color: #4CAF50; /* Couleur plus attractive */
+  background-color: #4CAF50;
   color: white;
   border-radius: 8px;
   cursor: pointer;
@@ -127,19 +122,30 @@ body {
 #user-popup h2 {
   font-size: 18px;
   margin-bottom: 20px;
+  text-align: center;
   color: #333;
 }
 
 #users {
   list-style-type: none;
   padding: 0;
+  margin-top: 15px;
 }
 
 #users li {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  transition: background-color 0.3s ease;
+}
+
+#users li:hover {
+  background-color: #e9ecef;
 }
 
 #users .status {
@@ -174,7 +180,7 @@ body {
 }
 
 .message:hover {
-  transform: scale(1.05); /* Effet de survol */
+  transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -206,7 +212,7 @@ body {
 }
 
 #message:focus {
-  border-color: #4CAF50; /* Effet de focus */
+  border-color: #4CAF50;
 }
 
 #send-btn {
