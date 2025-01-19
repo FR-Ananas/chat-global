@@ -1,16 +1,18 @@
 {
-  "name": "chat-app",
+  "name": "chat-en-temps-reel",
   "version": "1.0.0",
-  "description": "Chat en ligne",
+  "description": "Application de chat en temps réel avec Node.js, Express et Socket.IO",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.0.1"
+    "express": "^4.18.2",
+    "socket.io": "^4.5.4"
   },
-  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "author": "",
   "license": "ISC"
 }
