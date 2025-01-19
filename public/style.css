@@ -1,251 +1,58 @@
-.--dark-theme
-	--chat-background: rgba(10, 14, 14, 0.95)
-	--chat-panel-background: #131719
-	--chat-bubble-background: #14181a
-	--chat-add-button-background: #212324
-	--chat-send-button-background: #8147fc
-	--chat-text-color: #a3a3a3
-	--chat-options-svg: #a3a3a3
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f3f3f3;
+}
 
-@mixin centered 
-	position: absolute
-	top: 50%
-	left: 50%
-	transform: translate(-50%, -50%)
+#chat-container {
+  width: 80%;
+  max-width: 500px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-body
-	background: url(https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80)
-	background-size: cover
-	
+#messages {
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+}
 
-#chat
-	background: var(--chat-background)
-	max-width: 600px
-	margin: 25px auto
-	box-sizing: border-box
-	padding: 1em
-	border-radius: 12px
-	position: relative
-	overflow: hidden
-	&::before
-		content: ""
-		position: absolute
-		top: 0
-		left: 0
-		width: 100%
-		height: 100%
-		background: url(https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80) fixed
-		z-index: -1
+#messages div {
+  margin-bottom: 5px;
+}
 
-	.btn-icon
-		position: relative
-		cursor: pointer
-		svg
-			stroke: #FFF
-			fill: #FFF
-			width: 50%
-			height: auto
-			@include centered
+#input-container {
+  display: flex;
+}
 
-	.chat
-		&__conversation-board
-			padding: 1em 0 2em
-			height: calc(100vh - 55px - 2em - 25px * 2 - .5em - 3em)
-			overflow: auto
-	
-			&__message-container.reversed
-				flex-direction: row-reverse
-				
-				.chat__conversation-board__message__bubble 
-					position: relative
-	
-					span
-						&:not(:last-child)
-							margin: 0 0 2em 0
-		
-				.chat__conversation-board__message__person
-					margin: 0 0 0 1.2em
-	
-				.chat__conversation-board__message__options
-					align-self: center
-					position: absolute
-					left: 0
-					display: none
-	
-	
-			&__message-container
-				position: relative
-				display: flex
-				flex-direction: row
-				
-				&:hover 
-					.chat__conversation-board__message__options
-						display: flex
-						align-items: center
-					
-					.option-item:not(:last-child)
-						margin: 0 .5em 0 0
-	
-				&:not(:last-child)
-					margin: 0 0 2em 0
-		
-			&__message__person
-				text-align: center
-				margin: 0 1.2em 0 0
-	
-				&__avatar
-					height: 35px
-					width: 35px
-					overflow: hidden
-					border-radius: 50%
-					user-select: none
-					ms-user-select: none
-					position: relative
-	
-					&::before
-						content: ""
-						position: absolute
-						height: 100%
-						width: 100%
-	
-					img
-						height: 100%
-						width: auto
-		
-				&__nickname
-					font-size: 9px
-					color: #484848
-					user-select: none
-					display: none
-		
-			&__message__context
-				max-width: 55%
-				align-self: flex-end
-	
-			&__message__options
-				align-self: center
-				position: absolute
-				right: 0
-				display: none
-				
-				.option-item
-					border: 0
-					background: 0
-					padding: 0
-					margin: 0
-					height: 16px
-					width: 16px
-					outline: none
-	
-				.emoji-button
-					svg
-						stroke: var(--chat-options-svg)
-						fill: transparent
-						width: 100%
-		
-				.more-button
-					svg
-						stroke: var(--chat-options-svg)
-						fill: transparent
-						width: 100%
-	
-			&__message__date
-		
-			&__message__bubble
-		
-				span
-					width: fit-content
-					display: inline-table
-					word-wrap: break-word
-					background: var(--chat-bubble-background)
-					font-size: 13px
-					color: var(--chat-text-color)
-					padding: .5em .8em
-					line-height: 1.5
-					border-radius: 6px
-					font-family: 'Lato', sans-serif
-					
-				&:not(:last-child)
-					margin: 0 0 .3em
-	
-				&:active
-					background: var(--chat-bubble-active-background)
-				
-		&__conversation-panel
-			background: var(--chat-panel-background)
-			border-radius: 12px
-			padding: 0 1em
-			height: 55px
-			margin: .5em 0 0
+#message-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
 
-			&__container
-				display: flex
-				flex-direction: row
-				align-items: center
-				height: 100%
-				
-				.panel-item:not(:last-child)
-					margin: 0 1em 0 0
+#send-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
 
-			&__button
-				background: grey
-				height: 20px
-				width: 30px
-				border: 0
-				padding: 0
-				outline: none
-				cursor: pointer
-		
-			.add-file-button
-				height: 23px
-				min-width: 23px
-				width: 23px
-				background: var(--chat-add-button-background)
-				border-radius: 50%
-				svg
-					width: 70%
-					stroke: #54575c
-	
-			.emoji-button
-				min-width: 23px
-				width: 23px
-				height: 23px
-				background: transparent
-				border-radius: 50%
-				svg
-					width: 100%
-					fill: transparent
-					stroke: #54575c
-		
-			.send-message-button
-				background: var(--chat-send-button-background)
-				height: 30px
-				min-width: 30px
-				border-radius: 50%
-				transition: .3s ease
-				&:active
-					transform: scale(.97)
-				
-				svg
-					margin: 1px -1px
-	
-			&__input
-				width: 100%
-				height: 100%
-				outline: none
-				position: relative
-				color: var(--chat-text-color)
-				font-size: 13px
-				background: transparent
-				border: 0
-				font-family: 'Lato', sans-serif
-				resize: none
-
-@media only screen and (max-width: 600px)
-	#chat
-		margin: 0
-		border-radius: 0
-		.chat__conversation-board
-			height: calc(100vh - 55px - 2em - .5em - 3em)
-		.chat__conversation-board__message__options
-			display: none !important
+#send-button:hover {
+  background-color: #45a049;
+}
