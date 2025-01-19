@@ -1,21 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat en Temps Réel</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="chat-container">
-    <div id="messages"></div>
-    <div id="input-container">
-      <input id="message-input" type="text" placeholder="Tapez votre message...">
-      <button id="send-button">Envoyer</button>
-    </div>
-  </div>
+mixin newMessage(avatarUrl, nickName, messages, type)
+	.chat__conversation-board__message-container(class={reversed: type === "me"})
+		.chat__conversation-board__message__person
+			.chat__conversation-board__message__person__avatar
+				img(src=avatarUrl alt=nickName)
+			span.chat__conversation-board__message__person__nickname= nickName
+		.chat__conversation-board__message__context
+			each message in messages
+				.chat__conversation-board__message__bubble 
+					span= message
+		.chat__conversation-board__message__options
+			button.btn-icon.chat__conversation-board__message__option-button.option-item.emoji-button
+				svg( class="feather feather-smile sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true")
+					circle( cx="12" cy="12" r="10")
+					path( d="M8 14s1.5 2 4 2 4-2 4-2")
+					line( x1="9" y1="9" x2="9.01" y2="9")
+					line( x1="15" y1="9" x2="15.01" y2="9")
+			button.btn-icon.chat__conversation-board__message__option-button.option-item.more-button
+				svg( class="feather feather-more-horizontal sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true")
+					circle( cx="12" cy="12" r="1")
+					circle( cx="19" cy="12" r="1")
+					circle( cx="5" cy="12" r="1")
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+#chat.--dark-theme
+	.chat__conversation-board
+		
+		+newMessage(
+		'https://randomuser.me/api/portraits/women/44.jpg', 
+		'Monika Figi', 
+		[`Somewhere stored deep, deep in my memory banks is the phrase "It really whips the llama's ass".`])
+		
+		+newMessage(
+		'https://randomuser.me/api/portraits/men/32.jpg', 
+		'Thomas Rogh', 
+		[`Think the guy that did the voice has a Twitter?`])
+		
+		+newMessage(
+		'https://randomuser.me/api/portraits/women/44.jpg', 
+		'Monika Figi', 
+		[`WE MUST FIND HIM!!`, `Wait ...`])
+		
+		+newMessage(
+		'https://randomuser.me/api/portraits/men/9.jpg', 
+		'Dennis Mikle', 
+		[`Winamp's still an essential.`], 
+		'me')
+					
+		
+	.chat__conversation-panel
+		.chat__conversation-panel__container
+			button.chat__conversation-panel__button.panel-item.btn-icon.add-file-button
+				svg(class="feather feather-plus sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true")
+					line( x1="12" y1="5" x2="12" y2="19")
+					line( x1="5" y1="12" x2="19" y2="12")
+				
+			button.chat__conversation-panel__button.panel-item.btn-icon.emoji-button
+				svg( class="feather feather-smile sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true")
+					circle( cx="12" cy="12" r="10")
+					path( d="M8 14s1.5 2 4 2 4-2 4-2")
+					line( x1="9" y1="9" x2="9.01" y2="9")
+					line( x1="15" y1="9" x2="15.01" y2="9")
+			
+			
+			input.chat__conversation-panel__input.panel-item(placeholder="Type a message...")
+			button.chat__conversation-panel__button.panel-item.btn-icon.send-message-button
+				svg(xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-reactid="1036")
+					line( x1="22" y1="2" x2="11" y2="13")
+					polygon( points="22 2 15 22 11 13 2 9 22 2")
+			
+			
+				
+			
