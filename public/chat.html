@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>Chat</h2>
+      <button id="showUsers">Utilisateurs</button>
+      <button id="settings">Paramètres</button>
+    </div>
+    <div id="chatBox"></div>
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Entrez un message..." />
+      <button id="sendMessage">Envoyer</button>
+    </div>
+  </div>
 
+  <!-- Modals -->
+  <div id="usersModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Utilisateurs Connectés</h3>
+      <ul id="usersList"></ul>
+      <button class="closeModal">Fermer</button>
+    </div>
+  </div>
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Paramètres</h3>
+      <label>
+        Couleur du texte :
+        <input type="color" id="textColor" />
+      </label>
+      <label>
+        Couleur de fond :
+        <input type="color" id="bgColor" />
+      </label>
+      <label>
+        Taille du texte :
+        <input type="number" id="textSize" min="10" max="40" />
+      </label>
+      <button id="disconnect">Déconnexion</button>
+      <button class="closeModal">Fermer</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
