@@ -33,9 +33,16 @@ io.on('connection', (socket) => {
     io.emit('userList', users);  // Mise à jour de la liste des utilisateurs après déconnexion
   });
 
-  // Lorsque l'utilisateur se déconnecte (fermeture de la session)
+  // Lorsque l'utilisateur se déconnecte (fermeture de la session ou fermeture de la page)
   socket.on('disconnect', () => {
     console.log('Un utilisateur est déconnecté');
+    
+    // Retirer l'utilisateur de la liste des utilisateurs
+    const username = socket.username;  // Récupérer le nom d'utilisateur de ce socket
+    if (username) {
+      users = users.filter(user => user !== username);
+      io.emit('userList', users);  // Mise à jour de la liste des utilisateurs
+    }
   });
 });
 
