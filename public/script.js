@@ -74,6 +74,6 @@ bgColorInput.addEventListener('input', () => {
   chatBox.style.backgroundColor = bgColorInput.value;
 });
 
-textSizeInput.addEventListener('input', () => {
+textSizeInput.addEventListener('change', () => {
   chatBox.style.fontSize = `${textSizeInput.value}px`;
 });
