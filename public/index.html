@@ -3,19 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion au Chat</title>
+  <title>Page d'Accueil - Chat</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Bienvenue sur le Chat</h1>
-    <input type="text" id="username" placeholder="Entrez votre pseudo" />
-    <button id="joinChat">Rejoindre le Chat</button>
+    <h1>Bienvenue sur le Chat !</h1>
+    <label for="username">Entrez votre pseudo :</label>
+    <input type="text" id="username" placeholder="Votre pseudo" />
+    <button id="joinChat">Rejoindre le chat</button>
   </div>
+
+  <script src="script.js"></script>
   <script>
+    // Lorsqu'un utilisateur entre son pseudo et clique sur "Rejoindre le chat"
     document.getElementById('joinChat').addEventListener('click', () => {
       const username = document.getElementById('username').value.trim();
       if (username) {
+        // Stocker le pseudo dans le stockage local et rediriger vers le chat
         localStorage.setItem('username', username);
         window.location.href = 'chat.html';
       } else {
