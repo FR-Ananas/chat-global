@@ -45,7 +45,13 @@ document.getElementById('sendMessage').addEventListener('click', () => {
 
 // Gestion du bouton "Déconnexion"
 document.getElementById('disconnect').addEventListener('click', () => {
+  // Signaler au serveur que l'utilisateur se déconnecte
+  socket.emit('disconnectUser', username);
+  
+  // Effacer le nom d'utilisateur du stockage local
   localStorage.clear();
+  
+  // Rediriger l'utilisateur vers la page d'accueil
   window.location.href = 'index.html';
 });
 
