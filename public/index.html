@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Global</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Formulaire de connexion -->
+    <div id="login-popup">
+      <div id="login">
+        <input type="text" id="username" placeholder="Choisis un pseudo" />
+        <button id="login-btn">Se connecter</button>
+      </div>
+    </div>
+
+    <!-- Interface du chat -->
+    <div id="chat" style="display: none;">
+      <button id="user-menu-btn">Voir les utilisateurs</button>
+      <div id="user-popup" style="display: none;">
+        <button id="close-user-popup" class="close-btn">×</button>
+        <h2>Utilisateurs en ligne (<span id="user-count">0</span>)</h2>
+        <ul id="users"></ul>
+      </div>
+
+      <div id="messages"></div>
+      <input type="text" id="message" placeholder="Tape ton message..." disabled />
+      <button id="send-btn" disabled>Envoyer</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
