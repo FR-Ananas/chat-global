@@ -15,6 +15,7 @@ if (!username) {
 
 // Signal au serveur qu'un nouvel utilisateur s'est connecté
 socket.emit('newUser', username);
+socket.username = username; // Associer le pseudo au socket pour pouvoir l'utiliser lors de la déconnexion
 
 // Mise à jour des messages
 socket.on('message', (data) => {
@@ -82,4 +83,9 @@ bgColorInput.addEventListener('input', () => {
 
 textSizeInput.addEventListener('change', () => {
   chatBox.style.fontSize = `${textSizeInput.value}px`;
+});
+
+// Utilisation de l'événement 'beforeunload' pour signaler la déconnexion quand l'utilisateur ferme la page
+window.addEventListener('beforeunload', () => {
+  socket.emit('disconnectUser', username);
 });
