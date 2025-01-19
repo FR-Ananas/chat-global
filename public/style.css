@@ -15,7 +15,7 @@ body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
+h1, h2, h3 {
   text-align: center;
 }
 
@@ -38,6 +38,19 @@ input, button {
   margin-bottom: 10px;
 }
 
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+}
+
+button {
+  cursor: pointer;
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -48,6 +61,7 @@ input, button {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal.hidden {
@@ -58,4 +72,19 @@ input, button {
   background: white;
   padding: 20px;
   border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-content ul li {
+  margin: 5px 0;
+}
+
+.closeModal {
+  margin-top: 20px;
 }
