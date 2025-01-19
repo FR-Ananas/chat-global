@@ -18,6 +18,7 @@ io.on('connection', (socket) => {
   
   // Écoute des nouveaux utilisateurs
   socket.on('newUser', (username) => {
+    socket.username = username;  // On associe le pseudo au socket
     users.push(username);
     io.emit('userList', users);  // Mise à jour de la liste des utilisateurs
   });
@@ -27,13 +28,13 @@ io.on('connection', (socket) => {
     io.emit('message', data);  // Diffuser les messages à tous les utilisateurs
   });
 
-  // Écoute de la déconnexion
+  // Écoute de la déconnexion manuelle (via bouton)
   socket.on('disconnectUser', (username) => {
     users = users.filter(user => user !== username);
     io.emit('userList', users);  // Mise à jour de la liste des utilisateurs après déconnexion
   });
 
-  // Lorsque l'utilisateur se déconnecte (fermeture de la session ou fermeture de la page)
+  // Lorsqu'un utilisateur se déconnecte (fermeture de la session ou fermeture de la page)
   socket.on('disconnect', () => {
     console.log('Un utilisateur est déconnecté');
     
