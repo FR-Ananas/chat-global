@@ -63,6 +63,8 @@ io.on('connection', (socket) => {
     });
     socket.emit('userList', channelUsers);
   });
+
+  socket.emit('channelsList', channels); // Envoie la liste des canaux au nouvel utilisateur
 });
 
 app.use(express.static('public'));
