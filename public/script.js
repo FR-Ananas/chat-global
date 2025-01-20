@@ -3,6 +3,8 @@ const username = localStorage.getItem('username');
 const channel = localStorage.getItem('channel') || 'Global';
 const chatBox = document.getElementById('chatBox');
 const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendMessage');
+const channelNameElement = document.getElementById('channelName');
 document.getElementById('channelName').textContent = channel;
 
 if (!username) {
@@ -22,6 +24,16 @@ socket.on('messageHistory', (messages) => {
     appendMessage(message.username, message.message);
   });
 });
+
+// Fonction pour afficher un message dans le chat
+function appendMessage(username, message) {
+  const messageElement = document.createElement('div');
+  messageElement.style.color = localStorage.getItem('textColor') || '#000000';
+  messageElement.style.fontSize = `${localStorage.getItem('textSize') || 15}px`;
+  messageElement.innerHTML = `<strong>${username}</strong>: ${message}`;
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
 
 // Appliquer les paramètres d'apparence
 function applySettings() {
@@ -45,7 +57,7 @@ function applySettings() {
 applySettings();
 
 // Envoi de messages
-document.getElementById('sendMessage').addEventListener('click', () => {
+sendButton.addEventListener('click', () => {
   const message = messageInput.value.trim();
   if (message) {
     socket.emit('message', { username, message, channel });
