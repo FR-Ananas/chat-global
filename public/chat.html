@@ -10,22 +10,22 @@
   <div class="chat-container">
     <div class="header">
       <h2>Chat</h2>
-      <button id="disconnect">Déconnexion</button>
-      <button id="showUsers">Utilisateurs</button>
-      <button id="settings">Paramètres</button>
+      <button id="disconnect">Déconnexion</button> <!-- Bouton de déconnexion -->
+      <button id="showUsers">Utilisateurs</button> <!-- Bouton pour afficher la liste des utilisateurs -->
+      <button id="settings">Paramètres</button> <!-- Bouton pour ouvrir les paramètres -->
     </div>
-    
-    <div id="chatMessages" class="chat-messages"></div>
 
-    <!-- Modal utilisateurs -->
+    <div id="chatMessages" class="chat-messages"></div> <!-- Contenu des messages -->
+
+    <!-- Modal des utilisateurs -->
     <div id="usersModal" class="modal">
       <div class="modal-content">
         <span class="closeModal">&times;</span>
-        <ul id="usersList"></ul>
+        <ul id="usersList"></ul> <!-- Liste des utilisateurs connectés -->
       </div>
     </div>
 
-    <!-- Modal paramètres -->
+    <!-- Modal des paramètres -->
     <div id="settingsModal" class="modal">
       <div class="modal-content">
         <span class="closeModal">&times;</span>
@@ -42,7 +42,7 @@
           <option value="20">Grand</option>
         </select>
         <br>
-        <button id="saveSettings">Sauvegarder</button>
+        <button id="saveSettings">Sauvegarder</button> <!-- Bouton pour sauvegarder les paramètres -->
       </div>
     </div>
   </div>
