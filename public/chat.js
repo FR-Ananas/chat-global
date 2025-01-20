@@ -22,8 +22,6 @@ if (disconnectButton) {
   disconnectButton.addEventListener('click', () => {
     disconnectUser();
   });
-} else {
-  console.error('Le bouton de déconnexion n\'a pas été trouvé');
 }
 
 // Vérifier si l'élément des utilisateurs existe avant d'ajouter l'écouteur d'événements
@@ -32,8 +30,6 @@ if (usersButton && usersModal && usersList) {
     socket.emit('getUsers');
     usersModal.style.display = 'block';
   });
-} else {
-  console.error('Le bouton des utilisateurs ou le modal n\'a pas été trouvé');
 }
 
 // Gérer l'affichage des utilisateurs
@@ -45,8 +41,6 @@ socket.on('userList', (users) => {
       userItem.textContent = user;
       usersList.appendChild(userItem);
     });
-  } else {
-    console.error('La liste des utilisateurs n\'a pas été trouvée');
   }
 });
 
@@ -54,9 +48,7 @@ socket.on('userList', (users) => {
 const closeModalButtons = document.querySelectorAll('.closeModal');
 closeModalButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    if (usersModal) {
-      usersModal.style.display = 'none';
-    }
+    usersModal.style.display = 'none';
   });
 });
 
@@ -65,8 +57,6 @@ if (settingsButton && settingsModal) {
   settingsButton.addEventListener('click', () => {
     settingsModal.style.display = 'block';
   });
-} else {
-  console.error('Le bouton des paramètres ou le modal n\'a pas été trouvé');
 }
 
 // Sauvegarde des paramètres de l'utilisateur
@@ -77,6 +67,7 @@ if (saveSettingsButton) {
     const backgroundColor = document.getElementById('backgroundColor').value;
     const textSize = document.getElementById('textSize').value;
 
+    // Appliquer les nouveaux paramètres de style
     document.body.style.color = textColor;
     document.body.style.backgroundColor = backgroundColor;
     document.body.style.fontSize = `${textSize}px`;
@@ -86,24 +77,18 @@ if (saveSettingsButton) {
     localStorage.setItem('backgroundColor', backgroundColor);
     localStorage.setItem('textSize', textSize);
 
-    if (settingsModal) {
-      settingsModal.style.display = 'none';
-    }
+    settingsModal.style.display = 'none';
   });
-} else {
-  console.error('Le bouton de sauvegarde des paramètres n\'a pas été trouvé');
 }
 
-// Vérification et récupération des paramètres sauvegardés
+// Récupérer les paramètres sauvegardés lors du démarrage de la page
 window.onload = () => {
   const savedTextColor = localStorage.getItem('textColor');
   const savedBackgroundColor = localStorage.getItem('backgroundColor');
   const savedTextSize = localStorage.getItem('textSize');
 
+  // Appliquer les paramètres sauvegardés au corps de la page
   if (savedTextColor) document.body.style.color = savedTextColor;
   if (savedBackgroundColor) document.body.style.backgroundColor = savedBackgroundColor;
   if (savedTextSize) document.body.style.fontSize = `${savedTextSize}px`;
-
-  // Debug: Afficher les paramètres dans la console (optionnel)
-  console.log(`Texte: ${savedTextColor}, Fond: ${savedBackgroundColor}, Taille: ${savedTextSize}`);
 };
