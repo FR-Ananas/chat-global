@@ -8,7 +8,7 @@ const channelsList = document.getElementById('channelsList');
 const createChannelButton = document.getElementById('createChannel');
 const backToChatButton = document.getElementById('backToChat');
 
-// Récupérer la liste des canaux
+// Récupérer la liste des canaux au moment de la connexion
 socket.emit('getChannels');
 
 socket.on('channelsList', (channels) => {
@@ -54,7 +54,7 @@ backToChatButton.addEventListener('click', () => {
   window.location.href = 'chat.html';
 });
 
-// Gérer les messages reçus (supprimer un canal)
+// Gérer la redirection vers les canaux après suppression
 socket.on('redirectToChannels', () => {
   alert('The channel has been deleted.');
   window.location.href = 'channels.html';
