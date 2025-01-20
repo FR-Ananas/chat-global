@@ -9,6 +9,7 @@ const channelsList = document.getElementById('channelsList');
 const createChannelButton = document.getElementById('createChannel');
 const backToChatButton = document.getElementById('backToChat');
 
+// Récupérer la liste des canaux
 socket.emit('getChannels');
 
 socket.on('channelsList', (channels) => {
@@ -18,7 +19,7 @@ socket.on('channelsList', (channels) => {
     li.textContent = channel.name;
     li.style.backgroundColor = channel.color;
 
-    // Ajouter une croix pour supprimer un canal si l'utilisateur l'a créé
+    // Ajouter un bouton de suppression pour l'auteur du canal
     if (channel.creator === username) {
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'X';
@@ -38,6 +39,7 @@ socket.on('channelsList', (channels) => {
   });
 });
 
+// Créer un nouveau canal
 createChannelButton.addEventListener('click', () => {
   const channelName = document.getElementById('newChannelName').value.trim();
   const channelColor = document.getElementById('newChannelColor').value;
@@ -48,10 +50,12 @@ createChannelButton.addEventListener('click', () => {
   }
 });
 
+// Retourner à la page de chat
 backToChatButton.addEventListener('click', () => {
   window.location.href = 'chat.html';
 });
 
+// Gérer les messages reçus (supprimer un canal)
 socket.on('redirectToChannels', () => {
   alert('The channel has been deleted.');
   window.location.href = 'channels.html';
