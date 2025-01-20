@@ -32,53 +32,71 @@ socket.on('messageHistory', (messages) => {
 
 // Ajouter un message au chat
 function appendMessage(username, message) {
-  const messageElement = document.createElement('div');
-  messageElement.style.color = localStorage.getItem('textColor') || '#000000';
-  messageElement.style.fontSize = `${localStorage.getItem('textSize') || 15}px`;
-  messageElement.innerHTML = `<strong>${username}</strong>: ${message}`;
-  chatBox.appendChild(messageElement);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  const msgElement = document.createElement('div');
+  msgElement.textContent = `${username}: ${message}`;
+  chatBox.appendChild(msgElement);
 }
 
-// Envoi de message dans le chat
+// Envoi du message
 sendButton.addEventListener('click', () => {
-  const message = messageInput.value.trim();
+  const message = messageInput.value;
   if (message) {
     socket.emit('message', { username, message, channel });
-    messageInput.value = ''; // Réinitialiser le champ de message
+    appendMessage(username, message); // Ajouter le message localement
+    messageInput.value = ''; // Réinitialiser le champ de texte
   }
 });
 
-// Obtenir la liste des utilisateurs dans le canal
+// Recevoir un message
+socket.on('message', ({ username, message }) => {
+  appendMessage(username, message);
+});
+
+// Liste des utilisateurs en ligne
 usersButton.addEventListener('click', () => {
   socket.emit('getUsers');
 });
 
-// Afficher la liste des utilisateurs dans le pop-up
 socket.on('userList', (users) => {
-  usersList.innerHTML = ''; // Réinitialiser la liste
-  users.forEach((user) => {
+  usersList.innerHTML = '';
+  users.forEach(user => {
     const li = document.createElement('li');
     li.textContent = user;
     usersList.appendChild(li);
   });
 });
 
-// Gérer les paramètres d'apparence (couleur et taille du texte)
+// Paramètres
 settingsButton.addEventListener('click', () => {
-  settingsModal.classList.remove('hidden');
+  settingsModal.style.display = 'block';
 });
 
-// Fermeture des modals
+// Fermer le modal des paramètres
 closeModalButtons.forEach(button => {
   button.addEventListener('click', () => {
-    settingsModal.classList.add('hidden');
+    settingsModal.style.display = 'none';
   });
 });
 
-// Déconnexion de l'utilisateur
+// Sauvegarder les paramètres
+document.getElementById('saveSettings').addEventListener('click', () => {
+  const textColor = document.getElementById('textColor').value;
+  const backgroundColor = document.getElementById('backgroundColor').value;
+  const textSize = document.getElementById('textSize').value;
+
+  document.body.style.color = textColor;
+  document.body.style.backgroundColor = backgroundColor;
+  document.body.style.fontSize = `${textSize}px`;
+
+  localStorage.setItem('textColor', textColor);
+  localStorage.setItem('backgroundColor', backgroundColor);
+  localStorage.setItem('textSize', textSize);
+  
+  settingsModal.style.display = 'none';
+});
+
+// Déconnexion
 disconnectButton.addEventListener('click', () => {
-  socket.emit('disconnectUser', username);
-  localStorage.clear();
+  localStorage.removeItem('username');
   window.location.href = 'index.html';
 });
