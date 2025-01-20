@@ -9,27 +9,6 @@ if (!username) {
   window.location.href = 'index.html';
 }
 
-// Récupérer et appliquer les paramètres enregistrés
-function applySettings() {
-  const textColor = localStorage.getItem('textColor') || '#000000';
-  const bgColor = localStorage.getItem('bgColor') || '#ffffff';
-  const textSize = localStorage.getItem('textSize') || '15';
-
-  document.documentElement.style.setProperty('--text-color', textColor);
-  document.documentElement.style.setProperty('--bg-color', bgColor);
-  document.documentElement.style.setProperty('--text-size', `${textSize}px`);
-
-  // Appliquer à tous les messages existants
-  const messages = document.querySelectorAll('#chatBox div');
-  messages.forEach((msg) => {
-    msg.style.color = textColor;
-    msg.style.fontSize = `${textSize}px`;
-  });
-}
-
-// Appliquer les paramètres dès le chargement
-applySettings();
-
 // Rejoindre le canal et récupérer l'historique des messages
 socket.emit('joinChannel', { username, channel });
 
@@ -44,14 +23,26 @@ socket.on('messageHistory', (messages) => {
   });
 });
 
-function appendMessage(sender, message) {
-  const messageElement = document.createElement('div');
-  messageElement.textContent = `${sender}: ${message}`;
-  messageElement.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
-  messageElement.style.fontSize = getComputedStyle(document.documentElement).getPropertyValue('--text-size');
-  chatBox.appendChild(messageElement);
-  chatBox.scrollTop = chatBox.scrollHeight;
+// Appliquer les paramètres d'apparence
+function applySettings() {
+  const textColor = localStorage.getItem('textColor') || '#000000';
+  const bgColor = localStorage.getItem('bgColor') || '#ffffff';
+  const textSize = localStorage.getItem('textSize') || '15';
+
+  document.documentElement.style.setProperty('--text-color', textColor);
+  document.documentElement.style.setProperty('--bg-color', bgColor);
+  document.documentElement.style.setProperty('--text-size', `${textSize}px`);
+
+  // Appliquer à tous les messages
+  const messages = document.querySelectorAll('#chatBox div');
+  messages.forEach((msg) => {
+    msg.style.color = textColor;
+    msg.style.fontSize = `${textSize}px`;
+  });
 }
+
+// Appliquer les paramètres dès le chargement
+applySettings();
 
 // Envoi de messages
 document.getElementById('sendMessage').addEventListener('click', () => {
