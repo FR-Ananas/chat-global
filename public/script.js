@@ -1,14 +1,15 @@
 const socket = io();
 const username = localStorage.getItem('username');
+const channel = localStorage.getItem('channel') || 'Global';
 const chatBox = document.getElementById('chatBox');
 const messageInput = document.getElementById('messageInput');
+document.getElementById('channelName').textContent = channel;
 
 if (!username) {
   window.location.href = 'index.html';
 }
 
-socket.emit('newUser', username);
-socket.username = username;
+socket.emit('joinChannel', { username, channel });
 
 socket.on('message', (data) => {
   const messageElement = document.createElement('div');
@@ -20,7 +21,7 @@ socket.on('message', (data) => {
 document.getElementById('sendMessage').addEventListener('click', () => {
   const message = messageInput.value.trim();
   if (message) {
-    socket.emit('message', { username, message });
+    socket.emit('message', { username, message, channel });
     messageInput.value = '';
   }
 });
