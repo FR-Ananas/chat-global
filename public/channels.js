@@ -5,42 +5,54 @@ if (!username) {
   window.location.href = 'index.html';
 }
 
-const channelList = document.getElementById('channelList');
-const channelNameInput = document.getElementById('channelName');
-const channelColorInput = document.getElementById('channelColor');
-const errorElement = document.getElementById('error');
+const channelsList = document.getElementById('channelsList');
+const createChannelButton = document.getElementById('createChannel');
+const backToChatButton = document.getElementById('backToChat');
 
-socket.emit('getChannels', username);
+socket.emit('getChannels');
 
-socket.on('channels', (channels) => {
-  channelList.innerHTML = '';
+socket.on('channelsList', (channels) => {
+  channelsList.innerHTML = '';
   channels.forEach((channel) => {
     const li = document.createElement('li');
     li.textContent = channel.name;
-    li.style.color = channel.color;
+    li.style.backgroundColor = channel.color;
+
+    // Ajouter une croix pour supprimer un canal si l'utilisateur l'a créé
+    if (channel.creator === username) {
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'X';
+      deleteButton.classList.add('deleteChannel');
+      deleteButton.addEventListener('click', () => {
+        socket.emit('deleteChannel', channel.name);
+      });
+      li.appendChild(deleteButton);
+    }
+
     li.addEventListener('click', () => {
       localStorage.setItem('channel', channel.name);
       window.location.href = 'chat.html';
     });
-    channelList.appendChild(li);
+
+    channelsList.appendChild(li);
   });
 });
 
-socket.on('channelLimitExceeded', () => {
-  errorElement.classList.remove('hidden');
-});
-
-document.getElementById('createChannel').addEventListener('click', () => {
-  const channelName = channelNameInput.value.trim();
-  const channelColor = channelColorInput.value;
+createChannelButton.addEventListener('click', () => {
+  const channelName = document.getElementById('newChannelName').value.trim();
+  const channelColor = document.getElementById('newChannelColor').value;
 
   if (channelName) {
-    socket.emit('createChannel', { username, name: channelName, color: channelColor });
-    channelNameInput.value = '';
+    socket.emit('createChannel', { name: channelName, color: channelColor, creator: username });
+    document.getElementById('newChannelName').value = '';
   }
 });
 
-document.getElementById('backToGlobal').addEventListener('click', () => {
-  localStorage.setItem('channel', 'Global');
+backToChatButton.addEventListener('click', () => {
   window.location.href = 'chat.html';
+});
+
+socket.on('redirectToChannels', () => {
+  alert('The channel has been deleted.');
+  window.location.href = 'channels.html';
 });
