@@ -9,6 +9,20 @@ if (!username) {
   window.location.href = 'index.html';
 }
 
+// Récupérer les paramètres enregistrés
+function applySettings() {
+  const textColor = localStorage.getItem('textColor') || '#000000';
+  const bgColor = localStorage.getItem('bgColor') || '#ffffff';
+  const textSize = localStorage.getItem('textSize') || '15';
+
+  document.documentElement.style.setProperty('--text-color', textColor);
+  document.documentElement.style.setProperty('--bg-color', bgColor);
+  document.documentElement.style.setProperty('--text-size', `${textSize}px`);
+}
+
+// Appliquer les paramètres dès le chargement
+applySettings();
+
 // Rejoindre le canal et récupérer l'historique des messages
 socket.emit('joinChannel', { username, channel });
 
@@ -26,6 +40,8 @@ socket.on('messageHistory', (messages) => {
 function appendMessage(sender, message) {
   const messageElement = document.createElement('div');
   messageElement.textContent = `${sender}: ${message}`;
+  messageElement.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+  messageElement.style.fontSize = getComputedStyle(document.documentElement).getPropertyValue('--text-size');
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -71,4 +87,23 @@ document.getElementById('disconnect').addEventListener('click', () => {
   socket.emit('disconnectUser', username);
   localStorage.clear();
   window.location.href = 'index.html';
+});
+
+// Gestion des paramètres
+document.getElementById('textColor').addEventListener('input', (e) => {
+  const color = e.target.value;
+  localStorage.setItem('textColor', color);
+  applySettings();
+});
+
+document.getElementById('bgColor').addEventListener('input', (e) => {
+  const color = e.target.value;
+  localStorage.setItem('bgColor', color);
+  applySettings();
+});
+
+document.getElementById('textSize').addEventListener('change', (e) => {
+  const size = e.target.value;
+  localStorage.setItem('textSize', size);
+  applySettings();
 });
