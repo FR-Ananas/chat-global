@@ -8,28 +8,41 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 let users = [];
-let channels = [{ name: 'Global', color: '#000000' }];
+let channels = [{ name: 'Global', color: '#000000', createdBy: null }];
+let userChannelCounts = {};
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
-  socket.on('getChannels', () => {
+  socket.on('getChannels', (username) => {
     socket.emit('channels', channels);
   });
 
   socket.on('createChannel', (channel) => {
-    channels.push(channel);
-    io.emit('channels', channels);
+    const { username, name, color } = channel;
+
+    if (!userChannelCounts[username]) {
+      userChannelCounts[username] = 0;
+    }
+
+    if (userChannelCounts[username] >= 2) {
+      socket.emit('channelLimitExceeded');
+    } else {
+      channels.push({ name, color, createdBy: username });
+      userChannelCounts[username]++;
+      io.emit('channels', channels);
+    }
   });
 
-  socket.on('newUser', (username) => {
+  socket.on('joinChannel', ({ username, channel }) => {
+    socket.join(channel);
     socket.username = username;
-    users.push(username);
-    io.emit('userList', users);
+    socket.channel = channel;
   });
 
   socket.on('message', (data) => {
-    io.emit('message', data);
+    const { username, message, channel } = data;
+    io.to(channel).emit('message', { username, message });
   });
 
   socket.on('disconnectUser', (username) => {
