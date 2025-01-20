@@ -21,7 +21,6 @@ socket.on('channelsList', (channels) => {
       window.location.href = 'chat.html';
     });
     channelsList.appendChild(li);
-  });
 });
 
 // Charger les canaux au démarrage
