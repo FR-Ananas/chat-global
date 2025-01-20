@@ -3,23 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liste des canaux</title>
+  <title>Canaux</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Canaux</h1>
-  <div id="channelsList"></div>
-
-  <button id="createChannel">Créer un canal</button>
-  <button id="backToChat">Retour au chat</button>
-
-  <!-- Modal de création de canal -->
-  <div id="createChannelModal" class="modal hidden">
-    <h3>Créer un nouveau canal</h3>
-    <input type="text" id="newChannelName" placeholder="Nom du canal" />
-    <input type="color" id="newChannelColor" />
-    <button id="submitCreateChannel">Créer</button>
-    <button class="closeModal">Fermer</button>
+  <div id="container">
+    <h1>Canaux</h1>
+    <button id="createChannelButton">Créer un canal</button>
+    <ul id="channelsList"></ul>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
