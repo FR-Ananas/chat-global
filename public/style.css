@@ -1,54 +1,50 @@
+:root {
+  --text-color: #000000;
+  --bg-color: #ffffff;
+  --text-size: 15px;
+}
+
 body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--text-size);
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
-  color: #333;
 }
 
-.container, .chat-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2, h3 {
-  text-align: center;
-}
-
-input, button, select {
-  font-size: 16px;
-}
-
-.chat-header {
+#chatContainer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  height: 100vh;
 }
 
 #chatBox {
-  height: 400px;
-  overflow-y: scroll;
-  border: 1px solid #ddd;
+  flex: 1;
+  overflow-y: auto;
   padding: 10px;
-  background: #fafafa;
-  margin-bottom: 10px;
 }
 
-.chat-input {
+#messageInput {
+  width: calc(100% - 100px);
+  padding: 10px;
+  font-size: var(--text-size);
+}
+
+#sendMessage {
+  width: 80px;
+  font-size: var(--text-size);
+}
+
+.buttons {
   display: flex;
   gap: 10px;
-}
-
-.chat-input input {
-  flex: 1;
+  margin: 10px;
 }
 
 button {
-  cursor: pointer;
+  padding: 10px;
+  font-size: var(--text-size);
 }
 
 .modal {
@@ -57,34 +53,20 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: white;
+.modalContent {
+  background: #ffffff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
+  width: 300px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modal-content ul {
-  list-style: none;
-  padding: 0;
-}
-
-.modal-content ul li {
-  margin: 5px 0;
-}
-
-.closeModal {
-  margin-top: 20px;
+.hidden {
+  display: none;
 }
