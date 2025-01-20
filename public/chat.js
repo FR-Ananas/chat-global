@@ -1,105 +1,101 @@
+// Connexion au serveur WebSocket via Socket.io
 const socket = io();
-const username = localStorage.getItem('username');
-const channel = localStorage.getItem('channel') || 'Global';
-const chatBox = document.getElementById('chatBox');
-const messageInput = document.getElementById('messageInput');
-const sendButton = document.getElementById('sendMessage');
-const usersButton = document.getElementById('showUsers');
-const usersList = document.getElementById('usersList');
-const channelNameElement = document.getElementById('channelName');
-const settingsButton = document.getElementById('settings');
+
+// Initialisation des éléments DOM
 const disconnectButton = document.getElementById('disconnect');
+const usersButton = document.getElementById('showUsers');
+const usersModal = document.getElementById('usersModal');
+const usersList = document.getElementById('usersList');
+const settingsButton = document.getElementById('settings');
 const settingsModal = document.getElementById('settingsModal');
-const closeModalButtons = document.querySelectorAll('.closeModal');
 
-// Vérifier si l'élément de channelName existe avant de l'afficher
-if (channelNameElement) {
-  channelNameElement.textContent = channel;
-}
-
-// Si l'utilisateur n'est pas connecté, redirige vers la page d'accueil
-if (!username) {
-  window.location.href = 'index.html';
-}
-
-// Rejoindre le canal
-socket.emit('joinChannel', { username, channel });
-
-// Afficher l'historique des messages du canal
-socket.on('messageHistory', (messages) => {
-  chatBox.innerHTML = ''; // Réinitialiser l'affichage des messages
-  messages.forEach((message) => {
-    appendMessage(message.username, message.message);
+// Vérifier si l'élément de déconnexion existe avant d'ajouter l'écouteur d'événements
+if (disconnectButton) {
+  disconnectButton.addEventListener('click', () => {
+    disconnectUser();
   });
-});
-
-// Ajouter un message au chat
-function appendMessage(username, message) {
-  const msgElement = document.createElement('div');
-  msgElement.textContent = `${username}: ${message}`;
-  chatBox.appendChild(msgElement);
+} else {
+  console.error('Le bouton de déconnexion n\'a pas été trouvé');
 }
 
-// Envoi du message
-sendButton.addEventListener('click', () => {
-  const message = messageInput.value;
-  if (message) {
-    socket.emit('message', { username, message, channel });
-    appendMessage(username, message); // Ajouter le message localement
-    messageInput.value = ''; // Réinitialiser le champ de texte
+// Vérifier si l'élément de la liste des utilisateurs existe avant d'ajouter l'écouteur d'événements
+if (usersButton && usersModal && usersList) {
+  usersButton.addEventListener('click', () => {
+    socket.emit('getUsers');
+    usersModal.style.display = 'block';
+  });
+} else {
+  console.error('Le bouton des utilisateurs ou le modal n\'a pas été trouvé');
+}
+
+// Gérer l'affichage des utilisateurs
+socket.on('userList', (users) => {
+  if (usersList) {
+    usersList.innerHTML = ''; // Clear the list
+    users.forEach((user) => {
+      const userItem = document.createElement('li');
+      userItem.textContent = user;
+      usersList.appendChild(userItem);
+    });
+  } else {
+    console.error('La liste des utilisateurs n\'a pas été trouvée');
   }
 });
 
-// Recevoir un message
-socket.on('message', ({ username, message }) => {
-  appendMessage(username, message);
-});
-
-// Liste des utilisateurs en ligne
-usersButton.addEventListener('click', () => {
-  socket.emit('getUsers');
-});
-
-socket.on('userList', (users) => {
-  usersList.innerHTML = '';
-  users.forEach(user => {
-    const li = document.createElement('li');
-    li.textContent = user;
-    usersList.appendChild(li);
-  });
-});
-
-// Paramètres
-settingsButton.addEventListener('click', () => {
-  settingsModal.style.display = 'block';
-});
-
-// Fermer le modal des paramètres
-closeModalButtons.forEach(button => {
+// Fermer le modal des utilisateurs
+const closeModalButtons = document.querySelectorAll('.closeModal');
+closeModalButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    settingsModal.style.display = 'none';
+    if (usersModal) {
+      usersModal.style.display = 'none';
+    }
   });
 });
 
-// Sauvegarder les paramètres
-document.getElementById('saveSettings').addEventListener('click', () => {
-  const textColor = document.getElementById('textColor').value;
-  const backgroundColor = document.getElementById('backgroundColor').value;
-  const textSize = document.getElementById('textSize').value;
+// Fonctionnalité de gestion des paramètres (couleur, taille, etc.)
+if (settingsButton && settingsModal) {
+  settingsButton.addEventListener('click', () => {
+    settingsModal.style.display = 'block';
+  });
+} else {
+  console.error('Le bouton des paramètres ou le modal n\'a pas été trouvé');
+}
 
-  document.body.style.color = textColor;
-  document.body.style.backgroundColor = backgroundColor;
-  document.body.style.fontSize = `${textSize}px`;
+// Sauvegarde des paramètres de l'utilisateur
+const saveSettingsButton = document.getElementById('saveSettings');
+if (saveSettingsButton) {
+  saveSettingsButton.addEventListener('click', () => {
+    const textColor = document.getElementById('textColor').value;
+    const backgroundColor = document.getElementById('backgroundColor').value;
+    const textSize = document.getElementById('textSize').value;
 
-  localStorage.setItem('textColor', textColor);
-  localStorage.setItem('backgroundColor', backgroundColor);
-  localStorage.setItem('textSize', textSize);
-  
-  settingsModal.style.display = 'none';
-});
+    document.body.style.color = textColor;
+    document.body.style.backgroundColor = backgroundColor;
+    document.body.style.fontSize = `${textSize}px`;
 
-// Déconnexion
-disconnectButton.addEventListener('click', () => {
-  localStorage.removeItem('username');
-  window.location.href = 'index.html';
-});
+    // Sauvegarder les paramètres dans le localStorage pour les garder lors du prochain chargement
+    localStorage.setItem('textColor', textColor);
+    localStorage.setItem('backgroundColor', backgroundColor);
+    localStorage.setItem('textSize', textSize);
+
+    if (settingsModal) {
+      settingsModal.style.display = 'none';
+    }
+  });
+} else {
+  console.error('Le bouton de sauvegarde des paramètres n\'a pas été trouvé');
+}
+
+// Vérification et récupération des paramètres sauvegardés
+window.onload = () => {
+  const savedTextColor = localStorage.getItem('textColor');
+  const savedBackgroundColor = localStorage.getItem('backgroundColor');
+  const savedTextSize = localStorage.getItem('textSize');
+
+  if (savedTextColor) document.body.style.color = savedTextColor;
+  if (savedBackgroundColor) document.body.style.backgroundColor = savedBackgroundColor;
+  if (savedTextSize) document.body.style.fontSize = `${savedTextSize}px`;
+
+  // Debug: Afficher les paramètres dans la console (optionnel)
+  console.log(`Texte: ${savedTextColor}, Fond: ${savedBackgroundColor}, Taille: ${savedTextSize}`);
+};
