@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canaux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="channelsContainer">
+    <h1>Canaux</h1>
+    <ul id="channelList"></ul>
+    <h2>Créer un nouveau canal</h2>
+    <input type="text" id="channelName" placeholder="Nom du canal">
+    <label for="channelColor">Couleur de thème :</label>
+    <input type="color" id="channelColor">
+    <button id="createChannel">Créer</button>
+    <button id="backToGlobal">Retour à Global</button>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="channels.js"></script>
+</body>
+</html>
