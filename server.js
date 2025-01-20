@@ -25,6 +25,13 @@ io.on('connection', (socket) => {
     // Envoie l'historique des messages dans le canal
     const channelMessages = channels.find((c) => c.name === channel)?.messages || [];
     socket.emit('messageHistory', channelMessages);
+
+    // Envoie la liste des utilisateurs dans ce canal
+    const channelUsers = Array.from(io.sockets.adapter.rooms.get(channel) || []).map((socketId) => {
+      const userSocket = Array.from(io.sockets.sockets).find(([id]) => id === socketId);
+      return userSocket ? userSocket[1].handshake.query.username : null;
+    });
+    socket.emit('userList', channelUsers);
   });
 
   // Envoi de message
@@ -36,12 +43,9 @@ io.on('connection', (socket) => {
     }
   });
 
-  // Créer un nouveau canal
-  socket.on('createChannel', ({ name, color, creator }) => {
-    if (channels.filter((c) => c.creator === creator).length < 2) {
-      channels.push({ name, color, creator, messages: [] });
-      io.emit('channelsList', channels);
-    }
+  // Récupérer la liste des canaux
+  socket.on('getChannels', () => {
+    socket.emit('channelsList', channels);
   });
 
   // Supprimer un canal
@@ -51,16 +55,7 @@ io.on('connection', (socket) => {
     io.to(channelName).emit('redirectToChannels');
   });
 
-  // Liste des utilisateurs dans un canal
-  socket.on('getUsers', (channel) => {
-    const channelUsers = Array.from(io.sockets.adapter.rooms.get(channel) || []).map((socketId) => {
-      const userSocket = Array.from(io.sockets.sockets).find(([id]) => id === socketId);
-      return userSocket ? userSocket[1].handshake.query.username : null;
-    });
-    socket.emit('userList', channelUsers);
-  });
-
-  // Déconnexion de l'utilisateur
+  // Déconnexion d'un utilisateur
   socket.on('disconnect', () => {
     if (currentUser) {
       users = users.filter((u) => u !== currentUser);
@@ -73,7 +68,14 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.emit('channelsList', channels); // Envoie la liste des canaux au nouvel utilisateur
+  // Liste des utilisateurs d'un canal
+  socket.on('getUsers', (channel) => {
+    const channelUsers = Array.from(io.sockets.adapter.rooms.get(channel) || []).map((socketId) => {
+      const userSocket = Array.from(io.sockets.sockets).find(([id]) => id === socketId);
+      return userSocket ? userSocket[1].handshake.query.username : null;
+    });
+    socket.emit('userList', channelUsers);
+  });
 });
 
 app.use(express.static('public'));
