@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 let users = [];
-let channels = [{ name: 'Global', color: '#ffffff', creator: null }];
+let channels = [{ name: 'Global', color: '#ffffff', creator: null, messages: [] }];
 
 io.on('connection', (socket) => {
   let currentUser = null;
@@ -26,7 +26,6 @@ io.on('connection', (socket) => {
   socket.on('message', ({ username, message, channel }) => {
     const channelObj = channels.find((c) => c.name === channel);
     if (channelObj) {
-      channelObj.messages = channelObj.messages || [];
       channelObj.messages.push({ username, message });
       io.to(channel).emit('message', { username, message });
     }
@@ -55,6 +54,14 @@ io.on('connection', (socket) => {
       channels = channels.filter((c) => c.creator !== currentUser);
       io.emit('channelsList', channels);
     }
+  });
+
+  socket.on('getUsers', (channel) => {
+    const channelUsers = Array.from(io.sockets.adapter.rooms.get(channel) || []).map((socketId) => {
+      const userSocket = Array.from(io.sockets.sockets).find(([id]) => id === socketId);
+      return userSocket ? userSocket[1].handshake.query.username : null;
+    });
+    socket.emit('userList', channelUsers);
   });
 });
 
