@@ -1,13 +1,19 @@
 {
   "name": "chat-app",
   "version": "1.0.0",
-  "description": "A real-time chat application with channels",
+  "description": "Chat application with channels and user system",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^4.0.1"
-  }
+    "socket.io": "^4.3.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "14.x"
+  },
+  "author": "",
+  "license": "ISC"
 }
