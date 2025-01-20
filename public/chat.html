@@ -3,41 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat - Discussion</title>
+  <title>Chat</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="container">
-    <h1>Discussion sur <span id="channelName"></span></h1>
-    <div id="chatBox"></div>
-    <textarea id="messageInput" placeholder="Votre message..."></textarea>
-    <button id="sendMessage">Envoyer</button>
-    <button id="showUsers">Utilisateurs</button>
-    <button id="settings">Paramètres</button>
-    <button id="disconnect">Déconnexion</button>
-  </div>
-
-  <div id="usersModal" class="modal">
-    <div class="modal-content">
-      <span class="closeModal">&times;</span>
-      <ul id="usersList"></ul>
+  <div class="chat-container">
+    <div class="header">
+      <h2>Chat</h2>
+      <button id="disconnect">Déconnexion</button>
+      <button id="showUsers">Utilisateurs</button>
+      <button id="settings">Paramètres</button>
     </div>
-  </div>
+    
+    <div id="chatMessages" class="chat-messages"></div>
 
-  <div id="settingsModal" class="modal">
-    <div class="modal-content">
-      <span class="closeModal">&times;</span>
-      <label for="textColor">Couleur du texte:</label>
-      <input type="color" id="textColor">
-      <label for="backgroundColor">Couleur de fond:</label>
-      <input type="color" id="backgroundColor">
-      <label for="textSize">Taille du texte:</label>
-      <select id="textSize">
-        <option value="10">Petit</option>
-        <option value="15" selected>Moyen</option>
-        <option value="20">Grand</option>
-      </select>
-      <button id="saveSettings">Sauvegarder</button>
+    <!-- Modal utilisateurs -->
+    <div id="usersModal" class="modal">
+      <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <ul id="usersList"></ul>
+      </div>
+    </div>
+
+    <!-- Modal paramètres -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <label for="textColor">Couleur du texte :</label>
+        <input type="color" id="textColor">
+        <br>
+        <label for="backgroundColor">Couleur de fond :</label>
+        <input type="color" id="backgroundColor">
+        <br>
+        <label for="textSize">Taille du texte :</label>
+        <select id="textSize">
+          <option value="10">Petit</option>
+          <option value="15" selected>Moyen</option>
+          <option value="20">Grand</option>
+        </select>
+        <br>
+        <button id="saveSettings">Sauvegarder</button>
+      </div>
     </div>
   </div>
 
