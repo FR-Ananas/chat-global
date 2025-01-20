@@ -1,49 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat</title>
+  <title>Chat - Discussion</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="chatContainer">
-    <h1>Chat : <span id="channelName"></span></h1>
+  <div id="container">
+    <h1>Discussion sur <span id="channelName"></span></h1>
     <div id="chatBox"></div>
-    <input type="text" id="messageInput" placeholder="Écrivez un message...">
+    <textarea id="messageInput" placeholder="Votre message..."></textarea>
     <button id="sendMessage">Envoyer</button>
-    <div class="buttons">
-      <button id="showUsers">Utilisateurs</button>
-      <button id="settings">Paramètres</button>
-      <button id="channels">Canaux</button>
-      <button id="disconnect">Déconnexion</button>
-    </div>
-    <!-- Modals -->
-    <div id="usersModal" class="modal hidden">
-      <div class="modalContent">
-        <h2>Utilisateurs Connectés</h2>
-        <ul id="usersList"></ul>
-        <button class="closeModal">Fermer</button>
-      </div>
-    </div>
-    <div id="settingsModal" class="modal hidden">
-      <div class="modalContent">
-        <h2>Paramètres</h2>
-        <label for="textColor">Couleur du texte :</label>
-        <input type="color" id="textColor">
-        <label for="bgColor">Couleur de fond :</label>
-        <input type="color" id="bgColor">
-        <label for="textSize">Taille du texte :</label>
-        <select id="textSize">
-          <option value="10">Petit</option>
-          <option value="15" selected>Moyen</option>
-          <option value="20">Grand</option>
-        </select>
-        <button class="closeModal">Fermer</button>
-      </div>
+    <button id="showUsers">Utilisateurs</button>
+    <button id="settings">Paramètres</button>
+    <button id="disconnect">Déconnexion</button>
+  </div>
+
+  <div id="usersModal" class="modal">
+    <div class="modal-content">
+      <span class="closeModal">&times;</span>
+      <ul id="usersList"></ul>
     </div>
   </div>
+
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <span class="closeModal">&times;</span>
+      <label for="textColor">Couleur du texte:</label>
+      <input type="color" id="textColor">
+      <label for="backgroundColor">Couleur de fond:</label>
+      <input type="color" id="backgroundColor">
+      <label for="textSize">Taille du texte:</label>
+      <select id="textSize">
+        <option value="10">Petit</option>
+        <option value="15" selected>Moyen</option>
+        <option value="20">Grand</option>
+      </select>
+      <button id="saveSettings">Sauvegarder</button>
+    </div>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
+  <script src="chat.js"></script>
 </body>
 </html>
