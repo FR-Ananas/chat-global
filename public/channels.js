@@ -8,8 +8,9 @@ if (!username) {
 const channelList = document.getElementById('channelList');
 const channelNameInput = document.getElementById('channelName');
 const channelColorInput = document.getElementById('channelColor');
+const errorElement = document.getElementById('error');
 
-socket.emit('getChannels');
+socket.emit('getChannels', username);
 
 socket.on('channels', (channels) => {
   channelList.innerHTML = '';
@@ -25,12 +26,16 @@ socket.on('channels', (channels) => {
   });
 });
 
+socket.on('channelLimitExceeded', () => {
+  errorElement.classList.remove('hidden');
+});
+
 document.getElementById('createChannel').addEventListener('click', () => {
   const channelName = channelNameInput.value.trim();
   const channelColor = channelColorInput.value;
 
   if (channelName) {
-    socket.emit('createChannel', { name: channelName, color: channelColor });
+    socket.emit('createChannel', { username, name: channelName, color: channelColor });
     channelNameInput.value = '';
   }
 });
