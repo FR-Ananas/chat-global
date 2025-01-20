@@ -9,6 +9,14 @@ const usersList = document.getElementById('usersList');
 const settingsButton = document.getElementById('settings');
 const settingsModal = document.getElementById('settingsModal');
 
+// Fonction de déconnexion de l'utilisateur
+function disconnectUser() {
+  const username = localStorage.getItem('username');
+  socket.emit('disconnectUser', username);
+  localStorage.removeItem('username');
+  window.location.href = 'index.html';
+}
+
 // Vérifier si l'élément de déconnexion existe avant d'ajouter l'écouteur d'événements
 if (disconnectButton) {
   disconnectButton.addEventListener('click', () => {
@@ -18,7 +26,7 @@ if (disconnectButton) {
   console.error('Le bouton de déconnexion n\'a pas été trouvé');
 }
 
-// Vérifier si l'élément de la liste des utilisateurs existe avant d'ajouter l'écouteur d'événements
+// Vérifier si l'élément des utilisateurs existe avant d'ajouter l'écouteur d'événements
 if (usersButton && usersModal && usersList) {
   usersButton.addEventListener('click', () => {
     socket.emit('getUsers');
