@@ -6,7 +6,7 @@ const loginForm = document.getElementById('loginForm');
 const usernameInput = document.getElementById('username');
 
 // Événement de soumission du formulaire pour se connecter
-loginForm.addEventListener('submit', (event) => {
+loginForm?.addEventListener('submit', (event) => {
   event.preventDefault(); // Empêche l'envoi du formulaire par défaut
   const username = usernameInput.value.trim();
 
@@ -38,23 +38,23 @@ socket.on('connect', () => {
 // Gérer la déconnexion
 function disconnectUser() {
   const username = localStorage.getItem('username');
-  socket.emit('disconnectUser', username);
-  localStorage.removeItem('username');
-  window.location.href = 'index.html';
+  if (username) {
+    socket.emit('disconnectUser', username);
+    localStorage.removeItem('username');
+    window.location.href = 'index.html'; // Redirige vers la page d'accueil
+  }
 }
 
 // Gestion du bouton de déconnexion sur la page du chat
 const disconnectButton = document.getElementById('disconnect');
-if (disconnectButton) {
-  disconnectButton.addEventListener('click', () => {
-    disconnectUser();
-  });
-}
+disconnectButton?.addEventListener('click', () => {
+  disconnectUser();
+});
 
 // Quand un utilisateur est déconnecté
 socket.on('userDisconnected', (username) => {
   console.log(`${username} a quitté le chat.`);
-  // Mettez à jour la liste des utilisateurs en ligne dans le chat
+  // Mettez à jour la liste des utilisateurs en ligne dans le chat (si nécessaire)
 });
 
 // Gérer l'affichage des utilisateurs en ligne (dans le pop-up)
@@ -68,7 +68,7 @@ usersButton?.addEventListener('click', () => {
 });
 
 socket.on('userList', (users) => {
-  usersList.innerHTML = '';
+  usersList.innerHTML = ''; // Clear the list
   users.forEach((user) => {
     const userItem = document.createElement('li');
     userItem.textContent = user;
@@ -102,6 +102,7 @@ saveSettingsButton?.addEventListener('click', () => {
   const backgroundColor = backgroundColorInput.value;
   const textSize = textSizeSelect.value;
 
+  // Appliquer les nouveaux paramètres de style
   document.body.style.color = textColor;
   document.body.style.backgroundColor = backgroundColor;
   document.body.style.fontSize = `${textSize}px`;
@@ -120,8 +121,12 @@ window.onload = () => {
   const savedBackgroundColor = localStorage.getItem('backgroundColor');
   const savedTextSize = localStorage.getItem('textSize');
 
+  // Appliquer les paramètres sauvegardés au corps de la page
   if (savedTextColor) document.body.style.color = savedTextColor;
   if (savedBackgroundColor) document.body.style.backgroundColor = savedBackgroundColor;
   if (savedTextSize) document.body.style.fontSize = `${savedTextSize}px`;
+
+  // Debug: Afficher les paramètres dans la console (optionnel)
+  console.log(`Texte: ${savedTextColor}, Fond: ${savedBackgroundColor}, Taille: ${savedTextSize}`);
 };
 
