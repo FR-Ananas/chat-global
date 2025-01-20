@@ -1,6 +1,5 @@
 const socket = io();
 const username = localStorage.getItem('username');
-
 if (!username) {
   window.location.href = 'index.html';
 }
