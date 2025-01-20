@@ -12,7 +12,7 @@ const disconnectButton = document.getElementById('disconnect');
 const settingsModal = document.getElementById('settingsModal');
 const closeModalButtons = document.querySelectorAll('.closeModal');
 
-// Vérification si l'élément #channelName existe avant de le manipuler
+// Vérifier si l'élément de channelName existe avant de l'afficher
 if (channelNameElement) {
   channelNameElement.textContent = channel;
 }
