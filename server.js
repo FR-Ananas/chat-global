@@ -9,6 +9,7 @@ const io = socketIo(server);
 
 let users = [];
 let channels = [{ name: 'Global', color: '#000000', createdBy: null }];
+let messages = { Global: [] }; // Historique des messages par canal
 let userChannelCounts = {};
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,6 +31,7 @@ io.on('connection', (socket) => {
     } else {
       channels.push({ name, color, createdBy: username });
       userChannelCounts[username]++;
+      messages[name] = []; // Initialiser l'historique du canal
       io.emit('channels', channels);
     }
   });
@@ -38,24 +40,56 @@ io.on('connection', (socket) => {
     socket.join(channel);
     socket.username = username;
     socket.channel = channel;
+
+    if (!users.includes(username)) {
+      users.push(username);
+    }
+
+    if (!messages[channel]) {
+      messages[channel] = [];
+    }
+
+    // Envoyer l'historique des messages
+    socket.emit('messageHistory', messages[channel]);
+    io.emit('userList', users);
   });
 
   socket.on('message', (data) => {
     const { username, message, channel } = data;
-    io.to(channel).emit('message', { username, message });
+    const messageData = { username, message };
+
+    if (messages[channel]) {
+      messages[channel].push(messageData);
+
+      // Limiter à 100 messages pour éviter une surcharge
+      if (messages[channel].length > 100) {
+        messages[channel].shift();
+      }
+    }
+
+    io.to(channel).emit('message', messageData);
   });
 
-  socket.on('disconnectUser', (username) => {
-    users = users.filter(user => user !== username);
-    io.emit('userList', users);
+  socket.on('getUsers', (channel) => {
+    const connectedUsers = Array.from(
+      io.sockets.adapter.rooms.get(channel) || []
+    ).map((socketId) => io.sockets.sockets.get(socketId).username);
+
+    socket.emit('userList', connectedUsers);
   });
 
   socket.on('disconnect', () => {
     const username = socket.username;
+
     if (username) {
-      users = users.filter(user => user !== username);
+      users = users.filter((user) => user !== username);
       io.emit('userList', users);
     }
+  });
+
+  socket.on('disconnectUser', (username) => {
+    users = users.filter((user) => user !== username);
+    io.emit('userList', users);
   });
 });
 
