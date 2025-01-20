@@ -12,7 +12,10 @@ const disconnectButton = document.getElementById('disconnect');
 const settingsModal = document.getElementById('settingsModal');
 const closeModalButtons = document.querySelectorAll('.closeModal');
 
-channelNameElement.textContent = channel;
+// Vérification si l'élément #channelName existe avant de le manipuler
+if (channelNameElement) {
+  channelNameElement.textContent = channel;
+}
 
 // Si l'utilisateur n'est pas connecté, redirige vers la page d'accueil
 if (!username) {
