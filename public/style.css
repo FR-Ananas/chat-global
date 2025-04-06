@@ -101,6 +101,16 @@ button:hover {
   }
 }
 
+/* Animation pour l'ouverture des modals */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -112,6 +122,7 @@ button:hover {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  display: none;
 }
 
 .modal.hidden {
@@ -146,4 +157,9 @@ button:hover {
 
 .closeModal:hover {
   background-color: #bbb;
+}
+
+/* Ajout de l'animation pour les modals */
+.slide-in {
+  animation: slideIn 0.3s ease-out;
 }
