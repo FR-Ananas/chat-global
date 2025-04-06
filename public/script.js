@@ -23,6 +23,12 @@ socket.username = username;
 socket.on('message', (data) => {
     const messageElement = document.createElement('div');
     messageElement.textContent = `${data.username}: ${data.message}`;
+    messageElement.classList.add('chat-message');
+    
+    if (data.username === socket.username) {
+        messageElement.classList.add('user'); // Bulle à droite pour l'utilisateur
+    }
+    
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
@@ -76,7 +82,7 @@ textColorInput.addEventListener('input', () => {
 
 bgColorInput.addEventListener('input', () => {
     chatBox.style.backgroundColor = bgColorInput.value;
-    document.body.style.backgroundColor = bgColorInput.value; // ← AJOUT ICI
+    document.body.style.backgroundColor = bgColorInput.value; // ← Ajout du fond global
 });
 
 textSizeInput.addEventListener('change', () => {
