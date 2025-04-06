@@ -11,7 +11,7 @@ const textColorInput = document.getElementById('textColor');
 const bgColorInput = document.getElementById('bgColor');
 const textSizeInput = document.getElementById('textSize');
 
-// Couleur générée aléatoirement
+// Couleur générée aléatoirement pour les bulles de chaque utilisateur
 const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -37,8 +37,8 @@ socket.on('message', (data) => {
     messageElement.textContent = `${data.username}: ${data.message}`;
     messageElement.classList.add('chat-message');
     
-    // Appliquer la couleur unique pour chaque utilisateur
-    messageElement.style.color = data.color;
+    // Appliquer la couleur de fond unique (bulles) pour chaque utilisateur
+    messageElement.style.backgroundColor = data.color;
 
     if (data.username === socket.username) {
         messageElement.classList.add('user'); // Bulle à droite pour l'utilisateur
