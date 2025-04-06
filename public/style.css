@@ -73,6 +73,34 @@ button:hover {
   flex: 1;
 }
 
+/* Animation et style des messages */
+.chat-message {
+  max-width: 80%;
+  margin: 8px 0;
+  padding: 12px;
+  background-color: #e0f7fa;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: messageFadeIn 0.5s forwards;
+  font-size: 14px;
+}
+
+.chat-message.user {
+  background-color: #d1c4e9;
+  margin-left: auto;
+  text-align: right;
+}
+
+/* Animation de fade-in pour les messages */
+@keyframes messageFadeIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .modal {
   position: fixed;
   top: 0;
