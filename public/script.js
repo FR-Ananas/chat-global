@@ -11,13 +11,25 @@ const textColorInput = document.getElementById('textColor');
 const bgColorInput = document.getElementById('bgColor');
 const textSizeInput = document.getElementById('textSize');
 
+// Couleur générée aléatoirement
+const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
+
 if (!username) {
     window.location.href = 'index.html';
 }
 
-// Signal au serveur qu'un nouvel utilisateur s'est connecté
-socket.emit('newUser', username);
+// Signal au serveur qu'un nouvel utilisateur s'est connecté avec sa couleur
+const userColor = getRandomColor();
+socket.emit('newUser', { username, color: userColor });
 socket.username = username;
+socket.userColor = userColor;
 
 // Mise à jour des messages
 socket.on('message', (data) => {
@@ -25,6 +37,9 @@ socket.on('message', (data) => {
     messageElement.textContent = `${data.username}: ${data.message}`;
     messageElement.classList.add('chat-message');
     
+    // Appliquer la couleur unique pour chaque utilisateur
+    messageElement.style.color = data.color;
+
     if (data.username === socket.username) {
         messageElement.classList.add('user'); // Bulle à droite pour l'utilisateur
     }
@@ -38,7 +53,8 @@ socket.on('userList', (users) => {
     usersList.innerHTML = '';
     users.forEach((user) => {
         const li = document.createElement('li');
-        li.textContent = user;
+        li.textContent = user.username;
+        li.style.color = user.color; // Appliquer la couleur unique de chaque utilisateur
         usersList.appendChild(li);
     });
 });
@@ -47,31 +63,29 @@ socket.on('userList', (users) => {
 document.getElementById('sendMessage').addEventListener('click', () => {
     const message = messageInput.value.trim();
     if (message) {
-        socket.emit('message', { username, message });
+        socket.emit('message', { username, message, color: socket.userColor });
         messageInput.value = '';
     }
 });
 
-// Gestion du bouton "Déconnexion"
-document.getElementById('disconnect').addEventListener('click', () => {
-    socket.emit('disconnectUser', username);
-    localStorage.clear();
-    window.location.href = 'index.html';
-});
-
-// Ouverture et fermeture des modals
+// Ouverture et fermeture des modals avec animation
 document.getElementById('showUsers').addEventListener('click', () => {
     usersModal.classList.remove('hidden');
+    usersModal.classList.add('slide-in');
 });
 
 document.getElementById('settings').addEventListener('click', () => {
     settingsModal.classList.remove('hidden');
+    settingsModal.classList.add('slide-in');
 });
 
 document.querySelectorAll('.closeModal').forEach((button) => {
     button.addEventListener('click', () => {
         usersModal.classList.add('hidden');
         settingsModal.classList.add('hidden');
+        // Enlever l'animation après la fermeture
+        usersModal.classList.remove('slide-in');
+        settingsModal.classList.remove('slide-in');
     });
 });
 
