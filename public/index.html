@@ -33,17 +33,13 @@
     <script src="script.js"></script>
 
     <script>
-        // Vérification si le pseudo existe dans le localStorage
-        if (!localStorage.getItem('username')) {
-            const pseudo = prompt('Entrez votre pseudo pour commencer à discuter');
-            if (pseudo) {
-                localStorage.setItem('username', pseudo);
-                window.location.href = 'chat.html'; // Redirige vers la page de chat
-            } else {
-                alert("Le pseudo est nécessaire pour continuer.");
-            }
+        // Toujours demander un pseudo à l'utilisateur, même s'il en a déjà un
+        const pseudo = prompt('Entrez votre pseudo pour commencer à discuter');
+        if (pseudo) {
+            localStorage.setItem('username', pseudo); // Remplacer l'ancien pseudo
+            window.location.href = 'chat.html'; // Rediriger vers le chat
         } else {
-            window.location.href = 'chat.html'; // Si le pseudo existe, rediriger vers le chat
+            alert("Le pseudo est nécessaire pour continuer.");
         }
     </script>
 </body>
