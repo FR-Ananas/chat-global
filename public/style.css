@@ -1,164 +1,98 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-body {
-  font-family: 'Inter', sans-serif;
+/* Reset */
+* {
   margin: 0;
   padding: 0;
-  background-color: #f0f2f5;
-  color: #333;
-  transition: background-color 0.3s ease;
+  box-sizing: border-box;
 }
 
-.container, .chat-container {
-  max-width: 700px;
-  margin: 40px auto;
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  transition: background-color 0.5s ease;
+}
+
+#messages {
+  flex-grow: 1;
   padding: 20px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2, h3 {
-  text-align: center;
-}
-
-input, button, select {
-  font-size: 16px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-input:focus, select:focus {
-  border-color: #4a90e2;
-}
-
-button {
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #357ABD;
-}
-
-.chat-header {
+  overflow-y: auto;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-#chatBox {
-  height: 400px;
-  overflow-y: scroll;
-  border: 1px solid #ddd;
-  padding: 12px;
-  background: #fafafa;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.chat-input {
-  display: flex;
+  flex-direction: column;
   gap: 10px;
+  scrollbar-width: none;
 }
 
-.chat-input input {
-  flex: 1;
-}
-
-/* Animation et style des messages */
-.chat-message {
-  max-width: 80%;
-  margin: 8px 0;
-  padding: 12px;
-  background-color: #e0f7fa; /* Couleur de fond par défaut */
-  border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  transform: translateX(-50px);
-  animation: messageFadeIn 0.5s forwards;
-  font-size: 14px;
-}
-
-.chat-message.user {
-  background-color: #d1c4e9;
-  margin-left: auto;
-  text-align: right;
-}
-
-/* Animation de fade-in pour les messages */
-@keyframes messageFadeIn {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Animation pour l'ouverture des modals */
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
+#messages::-webkit-scrollbar {
   display: none;
 }
 
-.modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  text-align: center;
+.message {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 12px 18px;
+  border-radius: 12px;
+  max-width: 70%;
+  align-self: flex-start;
+  animation: fadeInUp 0.4s ease-out;
+  transition: background-color 0.3s ease;
 }
 
-.modal-content ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0;
+.message.user {
+  align-self: flex-end;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.modal-content ul li {
-  margin: 5px 0;
+@keyframes fadeInUp {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.closeModal {
-  margin-top: 20px;
-  background-color: #ccc;
-  color: #333;
+form {
+  display: flex;
+  padding: 20px;
+  background-color: #111;
+  border-top: 1px solid #333;
+  transition: background-color 0.3s ease;
 }
 
-.closeModal:hover {
-  background-color: #bbb;
+input[type="text"] {
+  flex: 1;
+  padding: 12px 16px;
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease;
 }
 
-/* Ajout de l'animation pour les modals */
-.slide-in {
-  animation: slideIn 0.3s ease-out;
+input[type="text"]:focus {
+  border-color: #888;
+}
+
+button {
+  margin-left: 12px;
+  padding: 12px 18px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #ddd;
+  transform: scale(1.05);
 }
