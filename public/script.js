@@ -4,32 +4,19 @@ const username = localStorage.getItem('username');
 const chatBox = document.getElementById('chatBox');
 const messageInput = document.getElementById('messageInput');
 const usersModal = document.getElementById('usersModal');
-const settingsModal = document.getElementById('settingsModal');
 const usersList = document.getElementById('usersList');
 
-const textColorInput = document.getElementById('textColor');
-const bgColorInput = document.getElementById('bgColor');
-const textSizeInput = document.getElementById('textSize');
-
 // Couleur générée aléatoirement pour les bulles de chaque utilisateur
-const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-};
+// On va garder des couleurs par défaut pour les bulles
+const defaultBubbleColor = '#e0f7fa'; // Couleur bleue claire pour les messages
 
 if (!username) {
     window.location.href = 'index.html';
 }
 
-// Signal au serveur qu'un nouvel utilisateur s'est connecté avec sa couleur
-const userColor = getRandomColor();
-socket.emit('newUser', { username, color: userColor });
+// Signal au serveur qu'un nouvel utilisateur s'est connecté
+socket.emit('newUser', { username });
 socket.username = username;
-socket.userColor = userColor;
 
 // Mise à jour des messages
 socket.on('message', (data) => {
@@ -37,8 +24,8 @@ socket.on('message', (data) => {
     messageElement.textContent = `${data.username}: ${data.message}`;
     messageElement.classList.add('chat-message');
     
-    // Appliquer la couleur de fond unique (bulles) pour chaque utilisateur
-    messageElement.style.backgroundColor = data.color;
+    // Appliquer la couleur de fond par défaut pour toutes les bulles
+    messageElement.style.backgroundColor = defaultBubbleColor;
 
     if (data.username === socket.username) {
         messageElement.classList.add('user'); // Bulle à droite pour l'utilisateur
@@ -54,7 +41,6 @@ socket.on('userList', (users) => {
     users.forEach((user) => {
         const li = document.createElement('li');
         li.textContent = user.username;
-        li.style.color = user.color; // Appliquer la couleur unique de chaque utilisateur
         usersList.appendChild(li);
     });
 });
@@ -63,44 +49,23 @@ socket.on('userList', (users) => {
 document.getElementById('sendMessage').addEventListener('click', () => {
     const message = messageInput.value.trim();
     if (message) {
-        socket.emit('message', { username, message, color: socket.userColor });
+        socket.emit('message', { username, message });
         messageInput.value = '';
     }
 });
 
-// Ouverture et fermeture des modals avec animation
+// Ouverture du modal des utilisateurs
 document.getElementById('showUsers').addEventListener('click', () => {
     usersModal.classList.remove('hidden');
     usersModal.classList.add('slide-in');
 });
 
-document.getElementById('settings').addEventListener('click', () => {
-    settingsModal.classList.remove('hidden');
-    settingsModal.classList.add('slide-in');
-});
-
 document.querySelectorAll('.closeModal').forEach((button) => {
     button.addEventListener('click', () => {
         usersModal.classList.add('hidden');
-        settingsModal.classList.add('hidden');
         // Enlever l'animation après la fermeture
         usersModal.classList.remove('slide-in');
-        settingsModal.classList.remove('slide-in');
     });
-});
-
-// Personnalisation des paramètres
-textColorInput.addEventListener('input', () => {
-    chatBox.style.color = textColorInput.value;
-});
-
-bgColorInput.addEventListener('input', () => {
-    chatBox.style.backgroundColor = bgColorInput.value;
-    document.body.style.backgroundColor = bgColorInput.value; // ← Ajout du fond global
-});
-
-textSizeInput.addEventListener('change', () => {
-    chatBox.style.fontSize = `${textSizeInput.value}px`;
 });
 
 // Signaler la déconnexion lors de la fermeture de la page
