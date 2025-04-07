@@ -7,40 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="chat-container">
-            <div class="chat-header">
-                <h1>Chat Global</h1>
-                <button id="showUsers">Utilisateurs</button>
-            </div>
-            <div id="chatBox" class="chat-box"></div>
-            <div class="chat-input">
-                <input type="text" id="messageInput" placeholder="Écrivez un message...">
-                <button id="sendMessage">Envoyer</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="usersModal" class="modal hidden">
-        <div class="modal-content">
-            <h3>Utilisateurs connectés</h3>
-            <ul id="usersList"></ul>
-            <button class="closeModal">Fermer</button>
-        </div>
-    </div>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
-
     <script>
-        // Toujours demander un pseudo à l'utilisateur, même s'il en a déjà un
-        const pseudo = prompt('Entrez votre pseudo pour commencer à discuter');
-        if (pseudo) {
-            localStorage.setItem('username', pseudo); // Remplacer l'ancien pseudo
-            window.location.href = 'chat.html'; // Rediriger vers le chat
-        } else {
-            alert("Le pseudo est nécessaire pour continuer.");
-        }
+        window.location.href = 'login.html'; // Redirige vers la page de connexion
     </script>
 </body>
 </html>
