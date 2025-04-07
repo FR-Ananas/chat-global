@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de connexion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="chat-container">
+            <h1>Bienvenue sur Chat Global</h1>
+            <p>Entrez votre pseudo pour commencer :</p>
+            <input type="text" id="username" placeholder="Votre pseudo">
+            <button id="startChat">Commencer</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('startChat').addEventListener('click', function() {
+            const pseudo = document.getElementById('username').value;
+            if (pseudo) {
+                localStorage.setItem('username', pseudo);
+                window.location.href = 'chat.html'; // Rediriger vers le chat
+            } else {
+                alert("Le pseudo est nécessaire pour continuer.");
+            }
+        });
+    </script>
+</body>
+</html>
